@@ -23,8 +23,10 @@ online: false
     log_level: info
 """
 import yaml
+import os
 from enum import Enum
 import logging
+import json
 logger = logging.getLogger('PROV')
 
 
@@ -265,5 +267,16 @@ def build_prov_for_transformation(prospective_prov: dict, transformation):
         }
     })
     return prospective_prov
+
+
+def append_log(retrospective_json: dict, log_dir: str, workflow_name: str, wfexec_id: str):
+    try:
+        log_file_path = os.path.abspath(
+            os.path.join(log_dir, 'prov-{}-wfexec-{}.log'.format(workflow_name, wfexec_id)))
+        with open(log_file_path, 'a') as f:
+            f.writelines("{}\n".format(json.dumps([retrospective_json])))
+    except Exception as e:
+        logger.error("Could not save prov logs in " + log_dir + "\n" + str(e))
+        pass
 
 
