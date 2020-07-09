@@ -84,7 +84,8 @@ class ProvLake(object):
         if should_log_to_file:
             if not os.path.exists(log_dir):
                 os.makedirs(os.path.join(os.getcwd(),log_dir))
-            offline_prov_log_path = os.path.join(log_dir, 'prov-{}.log'.format(self.wf_execution))
+            self.filename = 'prov-{}.log'.format(self.wf_execution)
+            offline_prov_log_path = os.path.join(log_dir, self.filename)
             handler = logging.FileHandler(offline_prov_log_path, mode='a+', delay=False)
             offline_prov_log = logging.getLogger("OFFLINE_PROV")
             offline_prov_log.setLevel("DEBUG")

@@ -17,7 +17,7 @@ class CycleIteration:
         :param input_args:
         :param log_dir:
         """
-        self.prov_obj = None
+        self.prov_obj = {}
         self.iteration_id = iteration_id
         self.cycle_name = cycle_name
         self.input_args = input_args
@@ -60,6 +60,8 @@ class CycleIteration:
 
         self.prov_obj["endTime"] = time()
         self.prov_obj["status"] = "FINISHED"
+        self.prov_obj["iteration_id"] = self.iteration_id
+        self.prov_obj["wf_execution"] = self.wfexec_id
 
         if stdout:
             self.prov_obj["stdout"] = stdout
