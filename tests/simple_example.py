@@ -15,7 +15,7 @@ def calc_factorial(n):
     return result
 
 
-prov = ProvLake(dataflow_name="factorial_dataflow", online=False, should_log_to_file=True)
+prov = ProvLake(workflow_name="factorial_dataflow", online=False, should_log_to_file=True)
 
 in_args = {"n": 5}
 with ProvTask(prov, "factorial_number", in_args) as prov_task:
@@ -24,5 +24,21 @@ with ProvTask(prov, "factorial_number", in_args) as prov_task:
 
     out_args = {"factorial": factorial}
     prov_task.output(out_args)
+
+
+
+with ProvTask(prov, "factorial_number", in_args) as prov_task:
+
+    factorial = calc_factorial(in_args.get("n"))
+
+    out_args = {"factorial": factorial}
+    prov_task.output(out_args)
+
+
+
+
+
+
+
 
 prov.close()

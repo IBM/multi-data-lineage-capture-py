@@ -1,7 +1,8 @@
 import traceback
 import logging
 from time import time
-from provlake import prov_utils
+from provlake.utils import prov_utils
+
 logger = logging.getLogger('PROV')
 
 

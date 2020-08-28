@@ -1,5 +1,5 @@
 from time import time
-from provlake import prov_utils
+from provlake.utils import prov_utils
 import os
 
 

@@ -6,11 +6,11 @@ with open('requirements.txt') as f:
 
 
 setup(name='provlake',
-      version='0.0.72',
+      version='0.0.74',
       description='A Python lib to capture multiworkflow provenance data from Python Scripts',
-      url='http://ibm.biz/provlake',
+      url='https://github.ibm.com/provlake/ProvLakePy',
       author='IBM Research',
-      license='Apache 2.0',
+      license='Internal use only / IBM only',
       install_requires=requires,
       package_dir={'': 'src'},
       packages=find_packages(where='src'),

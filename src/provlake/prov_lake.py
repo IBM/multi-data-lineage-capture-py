@@ -13,7 +13,7 @@ class ProvLake(object):
                  prospective_provenance_dict: dict = None,
                  storage_configuration_path: str=None,
                  storage_configuration_dict: dict=None,
-                 dataflow_name: str=None,
+                 workflow_name: str=None,
                  context: str=None,
                  insert_prospective=False,
                  with_validation: bool=False,
@@ -71,10 +71,10 @@ class ProvLake(object):
         self.last_task_id = 0
         self.wf_start_time = time()
 
-        self.df_name = dataflow_name or self.df_structure.get("dataflow_name", "NI")
+        self.df_name = workflow_name or self.df_structure.get("dataflow_name", "NI")
 
         self.tasks = dict()
-        self.wf_execution = "wfexec_" + str(self.wf_start_time)
+        self.wf_execution = self.wf_start_time
         self.wf_obj = {
             "wf_execution":  self.wf_execution,
             "startTime": self.wf_start_time
@@ -96,7 +96,6 @@ class ProvLake(object):
         if log_level == "NONE":
             log_level = "ERROR"
         log_lvl = getattr(logging, log_level.upper())
-        #logging.getLogger().setLevel(log_lvl)
         logger.setLevel(log_lvl)
 
         self.prov_persister = _ProvPersister(self.df_name, service_url=service_url, context=context, bag_size=bag_size,
