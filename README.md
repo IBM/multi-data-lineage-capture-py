@@ -1,6 +1,6 @@
-# Multi-Data Lineage System
+# Multi-Lineage Data System
 
- IBM Research Multi-Data Lineage System is a provenance data management system capable of capturing, integrating, and querying provenance data generated across multiple, distributed services, programs, databases, and computational workflows.
+ IBM Research Multi-Lineage Data System is a provenance data management system capable of capturing, integrating, and querying provenance data generated across multiple, distributed services, programs, databases, and computational workflows.
 
 **For more information on the project, including participants and publications, please see [ibm.biz/provlake](http://ibm.biz/provlake).**
 
