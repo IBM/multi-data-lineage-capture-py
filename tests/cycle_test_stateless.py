@@ -1,13 +1,14 @@
-from provlake.prov_lake import ProvLake
-from provlake.prov_task import ProvTask
+from provlake.capture.stateless.task import Task
+from provlake.capture.stateless.workflow import Workflow
+from provlake.capture.stateless.cycle import CycleIteration
 
 workflow_name = "factorial_workflow_example"
 cycle_name = "factorial_loop"
 dt_name = "do_multiplication"
 log_dir = "."
 
-
-prov = ProvLake(workflow_name=workflow_name, online=False, should_log_to_file=True)
+wf_start_time = Workflow.begin(workflow_name, log_dir)
+wfexec_id = str(wf_start_time)
 
 
 print("Start workflow")
