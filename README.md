@@ -2,6 +2,11 @@
 
 This is part of ProvLake Project. See [ibm.biz/provlake](http://ibm.biz/provlake) for more details.
 
+## Installation
+
+`pip install git+git://github.com/IBM/multi-data-lineage-capture-py.git@0.0.74-stable`
+
+
 ### A Python lib to capture multiworkflow provenance data from Python Scripts
 
 Use this library for code instrumentation to collect provenance data of function calls in a script. Input arguments or output values from functions can come from distributed data storages, including file systems and database systems.
