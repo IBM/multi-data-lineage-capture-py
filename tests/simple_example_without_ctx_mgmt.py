@@ -15,13 +15,17 @@ def calc_factorial(n):
     return result
 
 
-prov = ProvLake.get_persister("factorial_dataflow")
-with ProvWorkflow(prov):
+prov = ProvLake.get_persister("factorial_dataflow_without_ctx_mgmt")
+prov_workflow = ProvWorkflow(prov)
+prov_workflow.begin()
 
-    in_args = {"n": 5}
-    with ProvTask(prov, "factorial_number", in_args) as prov_task:
+in_args = {"n": 5}
+prov_task = ProvTask(prov, "factorial_number", in_args)
+prov_task.begin()
 
-        factorial = calc_factorial(in_args.get("n"))
+factorial = calc_factorial(in_args.get("n"))
 
-        out_args = {"factorial": factorial}
-        prov_task.end(out_args)
+out_args = {"factorial": factorial}
+prov_task.end(out_args)
+
+prov_workflow.end()

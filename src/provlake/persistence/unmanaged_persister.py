@@ -1,5 +1,5 @@
 from provlake.persistence.persister import Persister
-from provlake.prov_obj_model.activity_prov_obj import ProvRequestObj
+from provlake.model.activity_prov_obj import ProvRequestObj
 from provlake.utils.constants import StandardNamesAndIds
 import json
 import logging
@@ -14,9 +14,6 @@ class UnmanagedPersister(Persister):
 
     def add_request(self, persistence_request: ProvRequestObj):
         self._append_log(persistence_request.as_dict())
-
-    def _close(self):
-        pass
 
     def _append_log(self, retrospective_json: dict):
         try:

@@ -1,4 +1,4 @@
-from provlake.prov_obj_model.activity_prov_obj import ProvRequestObj
+from provlake.model.activity_prov_obj import ProvRequestObj
 from provlake.utils.constants import Vocabulary
 
 
@@ -47,4 +47,4 @@ class CycleProvRequestObj(ProvRequestObj):
             "type": self.type_,
             "values": self.values
         }
-        return super()._as_dict(ret_dict)
+        return super()._inject_prov_request_args(ret_dict)

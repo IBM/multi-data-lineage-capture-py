@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from provlake.prov_obj_model.activity_prov_obj import ProvRequestObj
+from provlake.model.activity_prov_obj import ProvRequestObj
 
 
 class Persister:
@@ -14,9 +14,8 @@ class Persister:
     def add_request(self, persistence_request_obj: ProvRequestObj):
         raise NotImplementedError
 
-    @abstractmethod
     def _close(self):
-        raise NotImplementedError
+        pass
 
     def get_wf_start_time(self) -> float:
         return self._wf_start_time

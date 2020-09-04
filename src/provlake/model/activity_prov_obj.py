@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-
+from provlake.utils.constants import Vocabulary
 
 class ProvRequestObj:
 
@@ -10,7 +10,7 @@ class ProvRequestObj:
         self.workflow_name = workflow_name
         self.wf_exec_id = wf_exec_id
 
-    def _as_dict(self, specific_prov_obj_dict: dict) -> dict:
+    def _inject_prov_request_args(self, specific_prov_obj_dict: dict) -> dict:
         return {
             "prov_obj": specific_prov_obj_dict,
             "dataflow_name": self.workflow_name,

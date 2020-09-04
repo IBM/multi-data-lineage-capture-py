@@ -1,8 +1,8 @@
 from provlake.persistence.persister import Persister
 from provlake.capture.activity_capture import ActivityCapture
-from provlake.prov_obj_model.workflow_prov_obj import WorkflowProvRequestObj
-from provlake.prov_obj_model.task_prov_obj import TaskProvRequestObj
-from provlake.prov_obj_model.cycle_prov_obj import CycleProvRequestObj
+from provlake.model.workflow_prov_obj import WorkflowProvRequestObj
+from provlake.model.task_prov_obj import TaskProvRequestObj
+from provlake.model.cycle_prov_obj import CycleProvRequestObj
 from provlake.utils.constants import Status, DataTransformationRequestType
 import traceback
 import logging

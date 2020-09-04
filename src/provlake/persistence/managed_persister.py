@@ -8,7 +8,7 @@ import urllib3
 from typing import List
 from provlake.persistence.persister import Persister
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-from provlake.prov_obj_model.activity_prov_obj import ProvRequestObj
+from provlake.model.activity_prov_obj import ProvRequestObj
 import logging
 
 offline_prov_log = logging.getLogger("OFFLINE_PROV")

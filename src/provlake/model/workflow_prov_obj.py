@@ -1,4 +1,4 @@
-from provlake.prov_obj_model.activity_prov_obj import ProvRequestObj
+from provlake.model.activity_prov_obj import ProvRequestObj
 from provlake.utils.constants import Vocabulary, ActType
 
 
@@ -31,6 +31,6 @@ class WorkflowProvRequestObj(ProvRequestObj):
             ret_dict[Vocabulary.STDOUT] = self.stdout
         if self.stderr:
             ret_dict[Vocabulary.STDERR] = self.stderr
-        return super()._as_dict(ret_dict)
+        return super()._inject_prov_request_args(ret_dict)
 
 

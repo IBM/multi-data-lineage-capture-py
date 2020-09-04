@@ -267,5 +267,3 @@ def build_prov_for_transformation(prospective_prov: dict, transformation):
     })
     return prospective_prov
 
-
-
