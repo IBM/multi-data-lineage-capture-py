@@ -1,5 +1,5 @@
-from provlake.prov_lake import ProvLake
-from provlake.prov_task import ProvTask
+from provlake import ProvLake
+from provlake.capture import ProvWorkflow, ProvTask
 from provlake.utils.args_handler import get_dict, get_list, get_recursive_dicts
 import sys
 import json
@@ -8,7 +8,8 @@ Very simple example to show how ProvLake is used to instrument a simple python s
 """
 
 
-prov = ProvLake(workflow_name="example_workflow", online=False, should_log_to_file=True)
+prov = ProvLake.get_persister(workflow_name="example_workflow", should_send_to_service=True)
+workflow = ProvWorkflow(prov).begin()
 
 in_args = {
     "student_id": get_list([1,2,3]),
@@ -59,9 +60,7 @@ in_args = {
     ]
 }
 with ProvTask(prov, "act_1", in_args) as prov_task:
-
-
     out_args = {"out": 50}
-    prov_task.output(out_args)
+    prov_task.end(out_args)
 
-prov.close()
+workflow.end()

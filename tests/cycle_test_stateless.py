@@ -1,6 +1,5 @@
-from provlake.capture.stateless.task import Task
-from provlake.capture.stateless.workflow import Workflow
-from provlake.capture.stateless.cycle import CycleIteration
+from provlake import ProvLake
+from provlake.capture import ProvWorkflow, ProvTask, ProvCycle
 
 workflow_name = "factorial_workflow_example"
 cycle_name = "factorial_loop"
