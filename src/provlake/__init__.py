@@ -27,9 +27,9 @@ class ProvLake:
             db_name: str
     ) -> ManagedPersister:
 
-        if not service_url:
-            service_url = os.getenv("PROV_SERVICE_URL", "http://localhost:5000")
-
+        if service_url:
+            should_send_to_service = True
+        
         if not bag_size:
             bag_size = int(os.getenv("PROV_BAG_SIZE", 1))
 
@@ -43,7 +43,7 @@ class ProvLake:
                                                "'should_send_to_service' parameters."
         if should_send_to_file:
             if not os.path.exists(log_dir):
-                os.makedirs(os.path.join(os.getcwd(),log_dir))
+                os.makedirs(os.path.join(os.getcwd(), log_dir))
 
             offline_prov_log_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name, wf_start_time)
             handler = logging.FileHandler(offline_prov_log_path, mode='a+', delay=False)
@@ -77,7 +77,6 @@ class ProvLake:
             log_level: str = 'error',
             should_send_to_file=True,
             log_dir='.',
-            should_send_to_service=False,
             service_url=None,
             bag_size=None,
             db_name: str = None,
@@ -95,7 +94,6 @@ class ProvLake:
                 log_dir=log_dir,
                 wf_start_time=wf_start_time,
                 service_url=service_url,
-                should_send_to_service=should_send_to_service,
                 should_send_to_file=should_send_to_file,
                 bag_size=bag_size,
                 cores=cores,
