@@ -18,7 +18,6 @@ class ProvLake:
             log_dir: str,
             wf_start_time: float,
             service_url: str,
-            should_send_to_service: bool,
             should_send_to_file: bool,
             bag_size: int,
             cores: int,
@@ -29,7 +28,7 @@ class ProvLake:
 
         if service_url:
             should_send_to_service = True
-        
+
         if not bag_size:
             bag_size = int(os.getenv("PROV_BAG_SIZE", 1))
 
