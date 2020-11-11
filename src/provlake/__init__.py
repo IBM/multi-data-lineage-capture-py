@@ -26,6 +26,7 @@ class ProvLake:
             db_name: str
     ) -> ManagedPersister:
 
+        should_send_to_service = False
         if service_url:
             should_send_to_service = True
 
