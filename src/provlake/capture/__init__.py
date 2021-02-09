@@ -79,7 +79,7 @@ class ProvWorkflow(ActivityCapture):
 class ProvTask(ActivityCapture):
 
     def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args: dict,
-                 parent_cycle_name: str = None, parent_cycle_iteration=None):
+                 parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None):
         super().__init__(prov_persister)
         if self._prov_persister is None:
             return
@@ -92,7 +92,8 @@ class ProvTask(ActivityCapture):
                                            values=input_args,
                                            status=Status.CREATED,
                                            parent_cycle_name=parent_cycle_name,
-                                           parent_cycle_iteration=parent_cycle_iteration
+                                           parent_cycle_iteration=parent_cycle_iteration,
+                                           person_id=person_id
                                            )
 
     def begin(self) -> TaskProvRequestObj:

@@ -9,6 +9,9 @@ class Vocabulary:
     VALUES = "values"
     STDOUT = "stdout"
     STDERR = "stderr"
+    PERSON = "person"
+    PARENT_CYCLE_ITERATION = "parent_cycle_iteration"
+    PARENT_CYLE_NAME = "parent_cycle_name"
 
 
 class Status:
