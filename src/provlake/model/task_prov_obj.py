@@ -4,7 +4,7 @@ from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequ
 
 class TaskProvRequestObj(ProvRequestObj):
 
-    def __init__(self, dt_name: str, type_: str, workflow_name: str, wf_exec_id: float, task_id: float=None,
+    def __init__(self, dt_name: str, type_: str, workflow_name: str, wf_exec_id: float, task_id=None,
                  person_id: str = None, values: dict = None, start_time: float = None, end_time: float = None,
                  parent_cycle_iteration=None, parent_cycle_name=None, status: str=None,
                  stdout: str=None, stderr: str=None):

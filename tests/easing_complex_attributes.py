@@ -8,7 +8,7 @@ Very simple example to show how ProvLake is used to instrument a simple python s
 """
 
 
-prov = ProvLake.get_persister(workflow_name="example_workflow", should_send_to_service=True)
+prov = ProvLake.get_persister(workflow_name="example_workflow")
 workflow = ProvWorkflow(prov).begin()
 
 in_args = {
