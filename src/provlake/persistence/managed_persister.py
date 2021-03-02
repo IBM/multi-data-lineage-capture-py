@@ -63,41 +63,6 @@ class ManagedPersister(Persister):
         if self.session:
             self.session.close()
 
-    # def persist_task(self, prov_obj: dict):
-    #     try:
-    #         data = {
-    #             "_prov_obj": prov_obj,
-    #             "dataflow_name": self._workflow_name,
-    #             "act_type": "task"
-    #         }
-    #         if self.context:
-    #             data["context"] = self.context
-    #         self.requests_queue.append(data)
-    #         if len(self.requests_queue) >= self.bag_size:
-    #             self.__flush__()
-    #     except Exception:
-    #         logger.error("[Prov] Unexpected exception")
-    #         traceback.print_exc()
-    #         pass
-
-    # def persist_workflow(self, prov_obj: dict):
-    #     try:
-    #         data = {
-    #             "_prov_obj": prov_obj,
-    #             "dataflow_name": self._workflow_name,
-    #             "act_type": "workflow"
-    #         }
-    #         if self.context:
-    #             data["context"] = self.context
-    #         self.requests_queue.append(data)
-    #         # if `configuration` is present this object should be persisted synchronously
-    #         if "configuration" in prov_obj:
-    #             self.__flush__(True)
-    #     except Exception:
-    #         logger.error("[Prov] Unexpected exception")
-    #         traceback.print_exc()
-    #         pass
-
     def _flush(self, all_and_wait: bool = False):
             if len(self.requests_queue) > 0:
                 if all_and_wait:
