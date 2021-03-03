@@ -73,7 +73,7 @@ class StandardNamesAndIds:
         return wfe_id
 
     @staticmethod
-    def get_dte_id(wfe_id, dt_name, prov_task):
+    def get_dte_id(wfe_id, dt_name:str , prov_task: dict):
         task_id = prov_task["id"]
         # TODO better wfe_id + dte_name + timestamp
         if Vocabulary.GENERATED_TIME in prov_task and \
