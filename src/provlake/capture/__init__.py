@@ -121,7 +121,7 @@ class ProvTask(ActivityCapture):
         if self._prov_persister is None:
             return None
         try:
-            if output_args:
+            if output_args is not None:
                 self.stored_output = True
 
                 self.prov_obj.end_time = time()
