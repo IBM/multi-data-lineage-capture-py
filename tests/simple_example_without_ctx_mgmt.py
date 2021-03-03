@@ -16,7 +16,7 @@ def calc_factorial(n):
     return result
 
 
-prov = ProvLake.get_persister("factorial_dataflow_without_ctx_mgmt", service_url="http://localhost:5000")
+prov = ProvLake.get_persister("factorial_dataflow_without_ctx_mgmt", wf_exec_id="my-own-id")
 prov_workflow = ProvWorkflow(prov)
 prov_workflow.begin()
 

@@ -23,7 +23,8 @@ class ProvLake:
             cores: int,
             context: str,
             with_validation: bool,
-            db_name: str
+            db_name: str,
+            wf_exec_id=None
     ) -> ManagedPersister:
 
         should_send_to_service = False
@@ -55,6 +56,7 @@ class ProvLake:
         return ManagedPersister(
             workflow_name=workflow_name,
             wf_start_time=wf_start_time,
+            wf_exec_id=wf_exec_id,
             service_url=service_url,
             context=context,
             with_validation=with_validation,
@@ -64,13 +66,15 @@ class ProvLake:
             should_send_to_service=should_send_to_service)
 
     @staticmethod
-    def _build_unmanaged_persister(workflow_name: str, log_dir: str, wf_start_time: float=None) -> UnmanagedPersister:
-        return UnmanagedPersister(workflow_name, wf_start_time, log_dir)
+    def _build_unmanaged_persister(workflow_name: str, log_dir: str, wf_start_time: float=None,
+                                   wf_exec_id=None) -> UnmanagedPersister:
+        return UnmanagedPersister(workflow_name, wf_start_time, log_dir, wf_exec_id)
 
     @staticmethod
     def get_persister(
             workflow_name: str,
             wf_start_time: float = None,
+            wf_exec_id=None,
             managed_persistence=True,
             context: str = None,
             with_validation: bool = False,
@@ -99,14 +103,16 @@ class ProvLake:
                 cores=cores,
                 context=context,
                 with_validation=with_validation,
-                db_name=db_name
+                db_name=db_name,
+                wf_exec_id=wf_exec_id
             )
 
         else:
             persister = ProvLake._build_unmanaged_persister(
                 workflow_name=workflow_name,
                 log_dir=log_dir,
-                wf_start_time=wf_start_time
+                wf_start_time=wf_start_time,
+                wf_exec_id=wf_exec_id
             )
 
         return persister

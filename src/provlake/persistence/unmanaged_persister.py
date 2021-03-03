@@ -8,8 +8,8 @@ logger = logging.getLogger('PROV')
 
 class UnmanagedPersister(Persister):
 
-    def __init__(self, workflow_name: str, wf_start_time: float, log_dir: str):
-        super().__init__(workflow_name, wf_start_time)
+    def __init__(self, workflow_name: str, wf_start_time: float, log_dir: str, wf_exec_id=None):
+        super().__init__(workflow_name, wf_start_time, wf_exec_id)
         self.log_file_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name, wf_start_time)
 
     def add_request(self, persistence_request: ProvRequestObj):

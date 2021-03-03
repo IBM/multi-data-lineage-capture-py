@@ -17,10 +17,10 @@ logger = logging.getLogger('PROV')
 
 class ManagedPersister(Persister):
 
-    def __init__(self, workflow_name: str, wf_start_time: float, service_url: str, context: str = None,
+    def __init__(self, workflow_name: str, wf_start_time: float, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
                  should_send_to_file: bool = False, should_send_to_service: bool = True):
-        super().__init__(workflow_name, wf_start_time)
+        super().__init__(workflow_name, wf_start_time, wf_exec_id)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
         self.prospective_url = urljoin(service_url, "prospective-provenance")
         self.context = context

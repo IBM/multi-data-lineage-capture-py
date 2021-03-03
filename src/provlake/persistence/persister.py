@@ -6,9 +6,12 @@ class Persister:
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, workflow_name: str, wf_start_time: float):
+    def __init__(self, workflow_name: str, wf_start_time: float, wf_exec_id=None):
         self._workflow_name = workflow_name
         self._wf_start_time = wf_start_time
+        self._wf_exec_id = wf_exec_id
+        if self._wf_exec_id is None:
+            self._wf_exec_id = self._wf_start_time
 
     @abstractmethod
     def add_request(self, persistence_request_obj: ProvRequestObj):
@@ -24,4 +27,4 @@ class Persister:
         return self._workflow_name
 
     def get_wf_exec_id(self) -> float:
-        return self.get_wf_start_time()
+        return self._wf_exec_id
