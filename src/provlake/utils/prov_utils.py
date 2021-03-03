@@ -7,7 +7,7 @@ dataflow_name:
   train: seismic_stratigraphic_train
   create_data: seismic_stratigraphic_create_training_data
   analyze_seismic: seismic_stratigraphic_analyze_seismic
-file_storage: dccad003.pok.ibm.com
+file_storage:
 with_validation: false
 should_send_to_file: true
 log_dir: .
@@ -23,10 +23,10 @@ should_send_to_service: false
     log_level: info
 """
 import yaml
-import os
 from enum import Enum
 import logging
-import json
+from datetime import datetime
+import hashlib
 logger = logging.getLogger('PROV')
 
 
@@ -267,3 +267,11 @@ def build_prov_for_transformation(prospective_prov: dict, transformation):
     })
     return prospective_prov
 
+
+def convert_timestamp(timestamp: float):
+    t = datetime.fromtimestamp(timestamp)
+    return t.strftime('%Y%m%dT%Hh%Mm%Ss%f')[:-3]
+
+
+def id_hash(val: str):
+    return hashlib.md5(val.encode()).hexdigest()
