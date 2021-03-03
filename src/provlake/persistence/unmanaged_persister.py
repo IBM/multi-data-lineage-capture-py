@@ -15,6 +15,9 @@ class UnmanagedPersister(Persister):
     def add_request(self, persistence_request: ProvRequestObj):
         self._append_log(persistence_request.as_dict())
 
+    def get_file_path(self):
+        return self.log_file_path
+
     def _append_log(self, retrospective_json: dict):
         try:
             with open(self.log_file_path, 'a') as f:
