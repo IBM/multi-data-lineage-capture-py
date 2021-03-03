@@ -5,11 +5,14 @@ from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequ
 class TaskProvRequestObj(ProvRequestObj):
 
     def __init__(self, dt_name: str, type_: str, workflow_name: str, wf_exec_id: float, task_id=None,
-                 person_id: str = None, values: dict = None, start_time: float = None, end_time: float = None,
-                 parent_cycle_iteration=None, parent_cycle_name=None, status: str=None,
+                 person_id: str = None, values: dict = None,
+                 generated_time: float = None, start_time: float = None, end_time: float = None,
+                 parent_cycle_iteration=None, parent_cycle_name=None, status: str = None,
                  stdout: str=None, stderr: str=None):
         super().__init__(ActType.TASK, workflow_name, wf_exec_id)
-        assert type_ in [DataTransformationRequestType.INPUT, DataTransformationRequestType.OUTPUT]
+        assert type_ in [DataTransformationRequestType.INPUT,
+                         DataTransformationRequestType.OUTPUT,
+                         DataTransformationRequestType.GENERATE]
         self.dt_name = dt_name
         self.person_id = person_id
         self.type_ = type_
@@ -17,6 +20,7 @@ class TaskProvRequestObj(ProvRequestObj):
         self.task_id = task_id
         self.start_time = start_time
         self.end_time = end_time
+        self.generated_time = generated_time
         self.parent_cycle_name = parent_cycle_name
         self.parent_cycle_iteration = parent_cycle_iteration
         self.stdout = stdout
@@ -35,6 +39,8 @@ class TaskProvRequestObj(ProvRequestObj):
             task_dict[Vocabulary.START_TIME] = self.start_time
         if self.end_time:
             task_dict[Vocabulary.END_TIME] = self.end_time
+        if self.generated_time:
+            task_dict[Vocabulary.GENERATED_TIME] = self.generated_time
         if self.parent_cycle_iteration:
             task_dict[Vocabulary.PARENT_CYCLE_ITERATION] = self.parent_cycle_iteration
         if self.parent_cycle_name:
@@ -45,12 +51,14 @@ class TaskProvRequestObj(ProvRequestObj):
             task_dict[Vocabulary.STDERR] = self.stderr
         if self.status:
             task_dict[Vocabulary.STATUS] = self.status
+
         ret_dict = {
             "task": task_dict,
             "dt": self.dt_name,
-            "type": self.type_,
-            "values": self.values
+            "type": self.type_
         }
+        if self.values:
+            ret_dict["values"] = self.values
         if self.person_id:
             ret_dict[Vocabulary.PERSON] = self.person_id
         return super()._inject_prov_request_args(ret_dict)

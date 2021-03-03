@@ -85,28 +85,32 @@ class ProvTask(ActivityCapture):
             return
 
         self.stored_output = False
+        self.input_args = input_args
+        generated_time = time()
+        if not task_id:
+            task_id = generated_time
+
         self.prov_obj = TaskProvRequestObj(dt_name=data_transformation_name,
-                                           type_=DataTransformationRequestType.INPUT,
+                                           type_=DataTransformationRequestType.GENERATE,
                                            wf_exec_id=prov_persister.get_wf_exec_id(),
                                            workflow_name=prov_persister.get_workflow_name(),
-                                           values=input_args,
-                                           status=Status.CREATED,
+                                           status=Status.GENERATED,
+                                           generated_time=generated_time,
                                            parent_cycle_name=parent_cycle_name,
                                            parent_cycle_iteration=parent_cycle_iteration,
                                            person_id=person_id,
                                            task_id=task_id
                                            )
 
+        self._prov_persister.add_request(self.prov_obj)
+
     def begin(self) -> TaskProvRequestObj:
         if self._prov_persister is None:
             return None
         try:
-            start_time = time()
-
-            if not self.prov_obj.task_id:
-                self.prov_obj.task_id = start_time
-
-            self.prov_obj.start_time = start_time
+            self.prov_obj.values = self.input_args
+            self.prov_obj.type_ = DataTransformationRequestType.INPUT
+            self.prov_obj.start_time = time()
             self.prov_obj.status = Status.RUNNING
             self._prov_persister.add_request(self.prov_obj)
             return self.prov_obj
@@ -117,7 +121,7 @@ class ProvTask(ActivityCapture):
                          self.prov_obj.dt_name + " args: " + str(self.prov_obj.values))
             return None
 
-    def end(self, output_args: dict=None, stdout=None, stderr=None) -> TaskProvRequestObj:
+    def end(self, output_args: dict=None, stdout=None, stderr=None, status=Status.FINISHED) -> TaskProvRequestObj:
         if self._prov_persister is None:
             return None
         try:
@@ -125,7 +129,7 @@ class ProvTask(ActivityCapture):
                 self.stored_output = True
 
                 self.prov_obj.end_time = time()
-                self.prov_obj.status = Status.FINISHED
+                self.prov_obj.status = status
                 self.prov_obj.values = output_args
                 self.prov_obj.type_ = DataTransformationRequestType.OUTPUT
                 self.prov_obj.stderr = stderr
@@ -188,7 +192,7 @@ class ProvCycle(ActivityCapture):
                                             workflow_name=prov_persister.get_workflow_name(),
                                             values=input_args,
                                             iteration_id=iteration_id,
-                                            status=Status.CREATED)
+                                            status=Status.GENERATED)
 
     def begin(self) -> CycleProvRequestObj:
         if self._prov_persister is None:

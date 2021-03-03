@@ -5,6 +5,7 @@ class Vocabulary:
 
     START_TIME = "startTime"
     END_TIME = "endTime"
+    GENERATED_TIME = "generatedTime"
     STATUS = "status"
     VALUES = "values"
     STDOUT = "stdout"
@@ -16,9 +17,10 @@ class Vocabulary:
 
 class Status:
 
-    CREATED = "CREATED"
+    GENERATED = "GENERATED"
     RUNNING = "RUNNING"
     FINISHED = "FINISHED"
+    ERRORED = "ERRORED"
 
 
 class ActType:
@@ -30,6 +32,7 @@ class ActType:
 
 class DataTransformationRequestType:
 
+    GENERATE = "Generate"
     INPUT = "Input"
     OUTPUT = "Output"
 
