@@ -1,4 +1,4 @@
-# ProvLake Lib
+# Multi-Data Lineage Capture - ProvLake Lib
 
 This is part of ProvLake Project. See [ibm.biz/provlake](http://ibm.biz/provlake) for more details.
 
