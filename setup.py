@@ -6,7 +6,7 @@ with open('requirements.txt') as f:
 
 
 setup(name='provlake',
-      version='0.0.72',
+      version='0.1.2',
       description='A Python lib to capture multiworkflow provenance data from Python Scripts',
       url='http://ibm.biz/provlake',
       author='IBM Research',
