@@ -4,7 +4,7 @@ This is part of ProvLake Project. See [ibm.biz/provlake](http://ibm.biz/provlake
 
 ## Installation
 
-`pip install git+git://github.com/IBM/multi-data-lineage-capture-py.git@0.0.74-stable`
+`pip install git+git://github.com/IBM/multi-data-lineage-capture-py.git`
 
 
 ### A Python lib to capture multiworkflow provenance data from Python Scripts
