@@ -7,9 +7,9 @@ dataflow_name:
   train: seismic_stratigraphic_train
   create_data: seismic_stratigraphic_create_training_data
   analyze_seismic: seismic_stratigraphic_analyze_seismic
-file_storage: dccad003.pok.ibm.com
+file_storage:
 with_validation: false
-should_log_to_file: true
+should_send_to_file: true
 log_dir: .
 align_terms:
   segy_path: seismic_file
@@ -19,14 +19,14 @@ stringify_params: ["unite_category"]
 not_tracked_params: ["prov", "prov_path", "input_path", "log_level", "dataset", "prov_config", "data_path" ]
 bag_size: 1
 service: http://localhost:5000
-online: false
+should_send_to_service: false
     log_level: info
 """
 import yaml
-import os
 from enum import Enum
 import logging
-import json
+from datetime import datetime
+import hashlib
 logger = logging.getLogger('PROV')
 
 
@@ -130,7 +130,6 @@ def build_generic_prospective(dataflow_name: str):
             }
         }
     }
-    # TODO Add machine host
     return prospective_prov, storage_configuration
 
 
@@ -269,14 +268,10 @@ def build_prov_for_transformation(prospective_prov: dict, transformation):
     return prospective_prov
 
 
-def append_log(retrospective_json: dict, log_dir: str, workflow_name: str, wfexec_id: str):
-    try:
-        log_file_path = os.path.abspath(
-            os.path.join(log_dir, 'prov-{}-wfexec-{}.log'.format(workflow_name, wfexec_id)))
-        with open(log_file_path, 'a') as f:
-            f.writelines("{}\n".format(json.dumps([retrospective_json])))
-    except Exception as e:
-        logger.error("Could not save prov logs in " + log_dir + "\n" + str(e))
-        pass
+def convert_timestamp(timestamp: float):
+    t = datetime.fromtimestamp(timestamp)
+    return t.strftime('%Y%m%dT%Hh%Mm%Ss%f')[:-3]
 
 
+def id_hash(val: str):
+    return hashlib.md5(val.encode()).hexdigest()

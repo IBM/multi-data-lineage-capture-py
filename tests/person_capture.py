@@ -15,11 +15,12 @@ def calc_factorial(n):
     return result
 
 
+person_id = "lga" #It could be read from a specification file (prospective provenacne data file)
 prov = ProvLake.get_persister("factorial_dataflow")
 with ProvWorkflow(prov):
 
     in_args = {"n": 5}
-    with ProvTask(prov, "factorial_number", in_args) as prov_task:
+    with ProvTask(prov, "factorial_number", in_args, person_id=person_id) as prov_task:
 
         factorial = calc_factorial(in_args.get("n"))
 

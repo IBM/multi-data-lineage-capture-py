@@ -3,4 +3,5 @@
 **/*egg*
 **/*build*
 **/*.log
-
+/.idea
+.pytest_cache/
