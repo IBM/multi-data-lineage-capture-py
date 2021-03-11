@@ -17,6 +17,6 @@ setup(name='provlake',
       packages=find_packages(where='src'),
       python_requires='>=3.6',
       include_package_data=True,
-      dependency_links=['http://github.com/IBM/multi-data-lineage-capture-py/tarball/master'],
+      dependency_links=['http://github.com/IBM/multi-data-lineage-capture-py/tarball/master#egg=package-1.0'],
       zip_safe=False
 )
