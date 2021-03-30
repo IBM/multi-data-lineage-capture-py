@@ -1,6 +1,7 @@
 import os
 from .prov_utils import convert_timestamp, id_hash
 
+
 class Vocabulary:
 
     START_TIME = "startTime"
@@ -13,6 +14,11 @@ class Vocabulary:
     PERSON = "person"
     PARENT_CYCLE_ITERATION = "parent_cycle_iteration"
     PARENT_CYLE_NAME = "parent_cycle_name"
+    CUSTOM_METADATA = "custom_metadata"
+    PROV_OBJ = "prov_obj"
+    WORKFLOW_NAME = "dataflow_name"
+    ACT_TYPE = "act_type"
+    ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
 
 
 class Status:
@@ -85,6 +91,6 @@ class StandardNamesAndIds:
             dte_id = dt_name + convert_timestamp(
                 prov_task[Vocabulary.START_TIME]) + wfe_id
         else:
-            dte_id = wfe_id + "_" + dt_name + "_" + task_id
+            dte_id = wfe_id + "_" + dt_name + "_" + str(task_id)
 
         return dte_id

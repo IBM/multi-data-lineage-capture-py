@@ -6,8 +6,9 @@ class WorkflowProvRequestObj(ProvRequestObj):
 
 
     def __init__(self, wf_exec_id: float, workflow_name: str, start_time: float=None, end_time: float = None,
-                 status: str = None, values: dict = None, stdout: str = None, stderr: str = None):
-        super().__init__(ActType.WORKFLOW, workflow_name, wf_exec_id)
+                 status: str = None, values: dict = None, stdout: str = None, stderr: str = None,
+                 custom_metadata:dict=None):
+        super().__init__(ActType.WORKFLOW, workflow_name, wf_exec_id, custom_metadata)
         self.start_time = start_time
         self.end_time = end_time
         self.status = status

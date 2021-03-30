@@ -28,7 +28,7 @@ class ProvLake:
     ) -> ManagedPersister:
 
         should_send_to_service = False
-        if service_url:
+        if service_url is not None:
             should_send_to_service = True
 
         if not bag_size:
