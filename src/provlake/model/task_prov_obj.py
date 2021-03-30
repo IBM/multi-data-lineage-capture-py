@@ -8,8 +8,8 @@ class TaskProvRequestObj(ProvRequestObj):
                  person_id: str = None, values: dict = None,
                  generated_time: float = None, start_time: float = None, end_time: float = None,
                  parent_cycle_iteration=None, parent_cycle_name=None, status: str = None,
-                 stdout: str=None, stderr: str=None):
-        super().__init__(ActType.TASK, workflow_name, wf_exec_id)
+                 stdout: str=None, stderr: str=None, custom_metadata:dict=None, attribute_associations:dict=None):
+        super().__init__(ActType.TASK, workflow_name, wf_exec_id, custom_metadata)
         assert type_ in [DataTransformationRequestType.INPUT,
                          DataTransformationRequestType.OUTPUT,
                          DataTransformationRequestType.GENERATE]
@@ -26,6 +26,7 @@ class TaskProvRequestObj(ProvRequestObj):
         self.stdout = stdout
         self.stderr = stderr
         self.status = status
+        self.attribute_associations = attribute_associations
         if not values:
             self.values = dict()
 
@@ -51,6 +52,8 @@ class TaskProvRequestObj(ProvRequestObj):
             task_dict[Vocabulary.STDERR] = self.stderr
         if self.status:
             task_dict[Vocabulary.STATUS] = self.status
+        if self.attribute_associations:
+            task_dict[Vocabulary.ATTRIBUTE_ASSOCIATIONS] = self.attribute_associations
 
         ret_dict = {
             "task": task_dict,

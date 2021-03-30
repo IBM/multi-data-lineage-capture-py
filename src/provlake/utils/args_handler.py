@@ -8,6 +8,7 @@ def get_dict(_dict:dict) -> dict:
         "values": _dict
     }
 
+
 def get_list(_list:list) -> dict:
     if _list is None:
         return None
@@ -17,6 +18,7 @@ def get_list(_list:list) -> dict:
        "type": "list",
         "values": _list
     }
+
 
 def get_recursive_dicts(_dict:dict) -> dict:
     if _dict is None:

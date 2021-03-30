@@ -13,8 +13,8 @@ logger = logging.getLogger('PROV')
 
 class ProvWorkflow(ActivityCapture):
 
-    def __init__(self, prov_persister: Persister):
-        super().__init__(prov_persister)
+    def __init__(self, prov_persister: Persister, custom_metadata:dict=None):
+        super().__init__(prov_persister, custom_metadata)
         if self._prov_persister is None:
             return
         self.stored_output = False
@@ -27,7 +27,8 @@ class ProvWorkflow(ActivityCapture):
                 wf_exec_id=self._prov_persister.get_wf_exec_id(),
                 workflow_name=self._prov_persister.get_workflow_name(),
                 start_time=self._prov_persister.get_wf_start_time(),
-                status=Status.RUNNING
+                status=Status.RUNNING,
+                custom_metadata=self.get_custom_metadata()
             )
             self._prov_persister.add_request(prov_obj)
             return self
@@ -37,7 +38,7 @@ class ProvWorkflow(ActivityCapture):
             logger.error("Error storing provenance for begin workflow")
             return None
 
-    def end(self, output_args: dict=None, stdout=None, stderr=None) -> 'ProvWorkflow':
+    def end(self, output_args=dict(), stdout=None, stderr=None, end_time=None) -> 'ProvWorkflow':
         if self._prov_persister is None:
             return None
         try:
@@ -46,7 +47,7 @@ class ProvWorkflow(ActivityCapture):
                 wf_exec_id=self._prov_persister.get_wf_exec_id(),
                 workflow_name=self._prov_persister.get_workflow_name(),
                 start_time=self._prov_persister.get_wf_start_time(),
-                end_time=time(),
+                end_time=end_time if end_time is not None else time(),
                 status=Status.FINISHED
             )
             if output_args:
@@ -73,20 +74,22 @@ class ProvWorkflow(ActivityCapture):
     def __exit__(self, *args):
         if self._prov_persister and not self.stored_output:
             # There is no output, but end of task should be recorded anyway.
-            self.end({}, "", "")
+            self.end()
 
 
 class ProvTask(ActivityCapture):
 
-    def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args: dict,
-                 parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None, task_id=None):
-        super().__init__(prov_persister)
+    def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args=dict(),
+                 parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None, task_id=None,
+                 custom_metadata:dict=None, attribute_associations:dict=None, generated_time:float=None):
+        super().__init__(prov_persister, custom_metadata)
         if self._prov_persister is None:
             return
 
         self.stored_output = False
         self.input_args = input_args
-        generated_time = time()
+        if not generated_time:
+            generated_time = time()
         if not task_id:
             task_id = generated_time
 
@@ -99,18 +102,20 @@ class ProvTask(ActivityCapture):
                                            parent_cycle_name=parent_cycle_name,
                                            parent_cycle_iteration=parent_cycle_iteration,
                                            person_id=person_id,
-                                           task_id=task_id
-                                           )
+                                           task_id=task_id,
+                                           custom_metadata=self.get_custom_metadata(),
+                                           attribute_associations=attribute_associations
+                                          )
 
         self._prov_persister.add_request(self.prov_obj)
 
-    def begin(self) -> TaskProvRequestObj:
+    def begin(self, start_time: float = None) -> TaskProvRequestObj:
         if self._prov_persister is None:
             return None
         try:
             self.prov_obj.values = self.input_args
             self.prov_obj.type_ = DataTransformationRequestType.INPUT
-            self.prov_obj.start_time = time()
+            self.prov_obj.start_time = start_time if start_time is not None else time()
             self.prov_obj.status = Status.RUNNING
             self._prov_persister.add_request(self.prov_obj)
             return self.prov_obj
@@ -121,21 +126,21 @@ class ProvTask(ActivityCapture):
                          self.prov_obj.dt_name + " args: " + str(self.prov_obj.values))
             return None
 
-    def end(self, output_args: dict=None, stdout=None, stderr=None, status=Status.FINISHED) -> TaskProvRequestObj:
+    def end(self, output_args=dict(), stdout=None, stderr=None, end_time: float = None, status=Status.FINISHED,
+            attribute_associations:dict = None) -> TaskProvRequestObj:
         if self._prov_persister is None:
             return None
         try:
-            if output_args is not None:
-                self.stored_output = True
-
-                self.prov_obj.end_time = time()
-                self.prov_obj.status = status
-                self.prov_obj.values = output_args
-                self.prov_obj.type_ = DataTransformationRequestType.OUTPUT
-                self.prov_obj.stderr = stderr
-                self.prov_obj.stdout = stdout
-                self._prov_persister.add_request(self.prov_obj)
-                return self.prov_obj
+            self.stored_output = True
+            self.prov_obj.end_time = end_time if end_time is not None else time()
+            self.prov_obj.status = status
+            self.prov_obj.values = output_args
+            self.prov_obj.type_ = DataTransformationRequestType.OUTPUT
+            self.prov_obj.stderr = stderr
+            self.prov_obj.stdout = stdout
+            self.prov_obj.attribute_associations = attribute_associations
+            self._prov_persister.add_request(self.prov_obj)
+            return self.prov_obj
         except Exception as e:
             traceback.print_exc()
             logger.error(str(e))
@@ -150,39 +155,14 @@ class ProvTask(ActivityCapture):
     def __exit__(self, *args):
         if self._prov_persister and not self.stored_output:
             # There is no output, but end of task should be recorded anyway.
-            self.end({}, "", "")
-
-    # def extend_input(self, args: dict):
-    #     try:
-    #         if self.prov:
-    #             self.__extend(args, "Input")
-    #     except Exception as e:
-    #         traceback.print_exc()
-    #         logger.error(str(e))
-    #         logger.error("Error storing ext provenance for " +
-    #                      self.data_transformation_name + " args: " + str(args))
-    #         pass
-    #
-    # def extend_output(self, args: dict):
-    #     try:
-    #         self.__extend(args, "Output")
-    #     except Exception as e:
-    #         traceback.print_exc()
-    #         logger.error(str(e))
-    #         logger.error("Error storing ext provenance for " +
-    #                      self.data_transformation_name + " args: " + str(args))
-    #         pass
-    #
-    # def __extend(self, args: dict, dataset_type="Input"):
-    #     self.prov.extend(self.task_id, self.data_transformation_name, values=args, dataset_type=dataset_type)
-
+            self.end()
 
 
 class ProvCycle(ActivityCapture):
 
-    def __init__(self, prov_persister: Persister, cycle_name: str, iteration_id,
-                 input_args: dict=None):
-        super().__init__(prov_persister)
+    def __init__(self, prov_persister: Persister, cycle_name: str, iteration_id, input_args=dict(),
+                 custom_metadata:dict=None):
+        super().__init__(prov_persister, custom_metadata)
         if self._prov_persister is None:
             return
         self.stored_output = False
@@ -192,15 +172,17 @@ class ProvCycle(ActivityCapture):
                                             workflow_name=prov_persister.get_workflow_name(),
                                             values=input_args,
                                             iteration_id=iteration_id,
-                                            status=Status.GENERATED)
+                                            status=Status.GENERATED,
+                                            custom_metadata=self.get_custom_metadata()
+                                            )
 
-    def begin(self) -> CycleProvRequestObj:
+    def begin(self, start_time: float = None) -> CycleProvRequestObj:
         if self._prov_persister is None:
             return
         try:
             start_time = time()
             self.prov_obj.task_id = start_time
-            self.prov_obj.start_time = start_time
+            self.prov_obj.start_time = start_time if start_time is not None else time()
             self.prov_obj.status = Status.RUNNING
             self._prov_persister.add_request(self.prov_obj)
             return self.prov_obj
@@ -211,21 +193,20 @@ class ProvCycle(ActivityCapture):
                          self.prov_obj.cycle_name + " args: " + str(self.prov_obj.values))
             return None
 
-    def end(self, output_args: dict=None, stdout=None, stderr=None) -> CycleProvRequestObj:
+    def end(self, output_args=dict(), stdout=None, stderr=None, end_time: float = None, status=Status.FINISHED) ->\
+            CycleProvRequestObj:
         if self._prov_persister is None:
             return
         try:
-            if output_args:
-                self.stored_output = True
-
-                self.prov_obj.end_time = time()
-                self.prov_obj.status = Status.FINISHED
-                self.prov_obj.values = output_args
-                self.prov_obj.type_ = DataTransformationRequestType.OUTPUT
-                self.prov_obj.stderr = stderr
-                self.prov_obj.stdout = stdout
-                self._prov_persister.add_request(self.prov_obj)
-                return self.prov_obj
+            self.stored_output = True
+            self.prov_obj.end_time = end_time if end_time is not None else time()
+            self.prov_obj.status = status
+            self.prov_obj.values = output_args
+            self.prov_obj.type_ = DataTransformationRequestType.OUTPUT
+            self.prov_obj.stderr = stderr
+            self.prov_obj.stdout = stdout
+            self._prov_persister.add_request(self.prov_obj)
+            return self.prov_obj
         except Exception as e:
             traceback.print_exc()
             logger.error(str(e))
@@ -240,4 +221,4 @@ class ProvCycle(ActivityCapture):
     def __exit__(self, *args):
         if self._prov_persister and not self.stored_output:
             # There is no output, but end of cycle should be recorded anyway.
-            self.end({}, "", "")
+            self.end()
