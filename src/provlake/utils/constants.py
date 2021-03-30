@@ -91,6 +91,6 @@ class StandardNamesAndIds:
             dte_id = dt_name + convert_timestamp(
                 prov_task[Vocabulary.START_TIME]) + wfe_id
         else:
-            dte_id = wfe_id + "_" + dt_name + "_" + task_id
+            dte_id = wfe_id + "_" + dt_name + "_" + str(task_id)
 
         return dte_id
