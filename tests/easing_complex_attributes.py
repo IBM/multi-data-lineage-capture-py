@@ -1,6 +1,6 @@
 from provlake import ProvLake
 from provlake.capture import ProvWorkflow, ProvTask
-from provlake.utils.args_handler import get_dict, get_list, get_recursive_dicts
+from provlake.utils.args_handler import get_dict, get_list, get_recursive_dicts, get_data_reference, add_custom_metadata
 import sys
 import json
 """
@@ -57,7 +57,20 @@ in_args = {
     "list_of_dicts": [
         {"a": 1},
         {"b": 2},
-    ]
+    ],
+    "seismic_uri": get_data_reference("http://ibm.org/Netherlands", datastore_id="Allegro1"),
+    "mysimple_arg": add_custom_metadata(value="myval", custom_metadata={"custom": 1}),
+    "mysimple_arg2": add_custom_metadata(value={"myval2": "val2"}, custom_metadata={"custom": 1}),
+    "mydict_list": get_list([
+        {
+            "name": "a",
+            "path": "/home/data/file_a.dat"
+        },
+        {
+            "name": "b",
+            "path": "/home/data/file_b.dat"
+        }
+    ])
 }
 with ProvTask(prov, "act_1", in_args) as prov_task:
     out_args = {"out": 50}

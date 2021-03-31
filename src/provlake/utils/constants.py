@@ -19,7 +19,9 @@ class Vocabulary:
     WORKFLOW_NAME = "dataflow_name"
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
-
+    DATA_REFERENCE_TYPE = "data_reference"
+    DATASTORE_ID = "datastore_id"
+    PROV_ATTR_TYPE = "prov_attr_type"
 
 class Status:
 
@@ -79,7 +81,7 @@ class StandardNamesAndIds:
         return wfe_id
 
     @staticmethod
-    def get_dte_id(wfe_id, dt_name:str , prov_task: dict):
+    def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
         task_id = prov_task["id"]
         # TODO better wfe_id + dte_name + timestamp
         if Vocabulary.GENERATED_TIME in prov_task and \

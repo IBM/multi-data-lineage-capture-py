@@ -81,7 +81,7 @@ class ProvTask(ActivityCapture):
 
     def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args=dict(),
                  parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None, task_id=None,
-                 custom_metadata:dict=None, attribute_associations:dict=None, generated_time:float=None):
+                 custom_metadata: dict = None, attribute_associations: dict = None, generated_time: float=None):
         super().__init__(prov_persister, custom_metadata)
         if self._prov_persister is None:
             return

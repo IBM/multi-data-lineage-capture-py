@@ -15,7 +15,7 @@ def calc_factorial(n):
     return result
 
 
-prov = ProvLake.get_persister("factorial_dataflow")
+prov = ProvLake.get_persister("factorial_dataflow", service_url="http://localhost:5000")
 with ProvWorkflow(prov):
 
     in_args = {"n": 5}
