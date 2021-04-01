@@ -42,16 +42,6 @@ class ProvLake:
             assert should_send_to_file is True, "If you are using ProvLake in offline mode, " \
                                                "you need to log prov data to file. Check your 'should_send_to_file' and " \
                                                "'should_send_to_service' parameters."
-        if should_send_to_file:
-            if not os.path.exists(log_dir):
-                os.makedirs(os.path.join(os.getcwd(), log_dir))
-
-            offline_prov_log_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name, wf_start_time)
-            handler = logging.FileHandler(offline_prov_log_path, mode='a+', delay=False)
-            offline_prov_log = logging.getLogger("OFFLINE_PROV")
-            offline_prov_log.setLevel("DEBUG")
-            offline_prov_log.addHandler(handler)
-            #should_send_to_file = True
 
         return ManagedPersister(
             workflow_name=workflow_name,
@@ -63,6 +53,7 @@ class ProvLake:
             db_name=db_name,
             bag_size=bag_size,
             should_send_to_file=should_send_to_file,
+            log_dir=log_dir,
             should_send_to_service=should_send_to_service)
 
     @staticmethod

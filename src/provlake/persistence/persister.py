@@ -17,6 +17,10 @@ class Persister:
     def add_request(self, persistence_request_obj: ProvRequestObj):
         raise NotImplementedError
 
+    @abstractmethod
+    def get_file_path(self):
+        return NotImplementedError
+
     def _close(self):
         pass
 
@@ -28,3 +32,4 @@ class Persister:
 
     def get_wf_exec_id(self) -> float:
         return self._wf_exec_id
+

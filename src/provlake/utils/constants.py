@@ -20,6 +20,9 @@ class Vocabulary:
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
     DATA_REFERENCE_TYPE = "data_reference"
+    ATTRIBUTE_VALUE_TYPE = "attribute_value"
+    DICT_TYPE = "dict"
+    LIST_TYPE = "list"
     DATASTORE_ID = "datastore_id"
     PROV_ATTR_TYPE = "prov_attr_type"
 
