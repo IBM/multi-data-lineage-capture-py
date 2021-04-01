@@ -23,7 +23,7 @@ class Vocabulary:
     ATTRIBUTE_VALUE_TYPE = "attribute_value"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
-    DATASTORE_ID = "datastore_id"
+    DATA_STORE_ID = "data_store_id"
     PROV_ATTR_TYPE = "prov_attr_type"
 
 class Status:
