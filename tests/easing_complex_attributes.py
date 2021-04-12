@@ -58,7 +58,7 @@ in_args = {
         {"a": 1},
         {"b": 2},
     ],
-    "seismic_uri": get_data_reference("http://ibm.org/Netherlands", datastore_id="Allegro1"),
+    "seismic_uri": get_data_reference("http://ibm.org/Netherlands", data_store_id="Allegro1"),
     "mysimple_arg": add_custom_metadata(value="myval", custom_metadata={"custom": 1}),
     "mysimple_arg2": add_custom_metadata(value={"myval2": "val2"}, custom_metadata={"custom": 1}),
     "mydict_list": get_list([

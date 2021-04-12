@@ -53,10 +53,10 @@ def add_custom_metadata(value, custom_metadata: dict = None) -> dict:
     }
 
 
-def get_data_reference(value, datastore_id) -> dict:
+def get_data_reference(value, data_store_id) -> dict:
     return {
         Vocabulary.VALUES: value,
         Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATA_REFERENCE_TYPE,
-        Vocabulary.DATASTORE_ID: datastore_id
+        Vocabulary.DATA_STORE_ID: data_store_id
     }
 
