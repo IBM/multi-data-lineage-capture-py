@@ -62,12 +62,18 @@ class StandardNamesAndIds:
         return os.path.abspath(os.path.join(log_dir, 'prov-{}-{}.log'.format(workflow_name, wf_start_time)))
 
     @staticmethod
-    def get_id_atv(attribute, value):
-        if type(value) in [dict, list]:
-            return attribute + "_" + id_hash(str(value))
+    def get_id_atv(attribute, value, value_type=None):
+        if value_type:
+            if value_type == Vocabulary.DATA_REFERENCE_TYPE:
+                return "data_ref#" + str(value)
+            else:
+                return attribute + "_" + str(value)
         else:
-            # TODO if its a float, replace the dots
-            return attribute + "_" + str(value)
+            if type(value) in [dict, list]:
+                return attribute + "_" + id_hash(str(value))
+            else:
+                # TODO if its a float, replace the dots
+                return attribute + "_" + str(value)
 
     @staticmethod
     def get_wfe_id(workflow_name: str, wf_exec_id):
