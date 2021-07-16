@@ -8,7 +8,7 @@ JSON_INDENT_SIZE = 1
 
 
 def convert_timestamp(timestamp: float) -> str:
-    t = datetime.fromtimestamp(timestamp)
+    t = datetime.utcfromtimestamp(timestamp)
     return t.strftime('%Y%m%dT%Hh%Mm%Ss%f')[:-3]
 
 
