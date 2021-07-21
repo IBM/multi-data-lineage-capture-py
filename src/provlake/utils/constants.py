@@ -105,3 +105,11 @@ class StandardNamesAndIds:
             dte_id = wfe_id + "_" + dt_name + "_" + str(task_id)
 
         return dte_id
+
+    @staticmethod
+    def get_dtes_in_wfe_ctx(wfe_id):
+        return wfe_id + "dtes"
+
+    @staticmethod
+    def get_cycles_in_wfe_ctx(wfe_id):
+        return wfe_id + "ce"
