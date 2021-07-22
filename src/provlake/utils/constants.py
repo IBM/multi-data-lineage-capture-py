@@ -26,6 +26,7 @@ class Vocabulary:
     DATA_STORE_ID = "data_store_id"
     PROV_ATTR_TYPE = "prov_attr_type"
 
+
 class Status:
 
     GENERATED = "GENERATED"
@@ -108,8 +109,8 @@ class StandardNamesAndIds:
 
     @staticmethod
     def get_dtes_in_wfe_ctx(wfe_id):
-        return wfe_id + "dtes"
+        return wfe_id + "_dtes"
 
     @staticmethod
     def get_cycles_in_wfe_ctx(wfe_id):
-        return wfe_id + "ce"
+        return wfe_id + "_ce"
