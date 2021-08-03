@@ -66,7 +66,7 @@ class StandardNamesAndIds:
     def get_id_atv(attribute, value, value_type=None):
         if value_type:
             if value_type == Vocabulary.DATA_REFERENCE_TYPE:
-                return "data_ref#" + str(value)
+                return "" + str(value)
             else:
                 return attribute + "_" + str(value)
         else:
