@@ -90,6 +90,8 @@ class StandardNamesAndIds:
             wfe_id = workflow_name.lower() + "_exec_" + str(wf_exec_id)
         return wfe_id
 
+
+
     @staticmethod
     def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
         task_id = prov_task["id"]
@@ -108,9 +110,25 @@ class StandardNamesAndIds:
         return dte_id
 
     @staticmethod
-    def get_dtes_in_wfe_ctx(wfe_id):
-        return wfe_id + "_dtes"
+    def get_wfe_ctx_id(wfe_id):
+        return wfe_id+"_ctx"
 
     @staticmethod
-    def get_cycles_in_wfe_ctx(wfe_id):
-        return wfe_id + "_ce"
+    def get_cce_ctx_id(cce_id):
+        return cce_id + "_ctx"
+
+    @staticmethod
+    def get_cci_ctx_id(cci_id):
+        return cci_id + "_ctx"
+
+    @staticmethod
+    def get_wfe_instantiations_ctx_id(wfe_id):
+        return wfe_id + "_instantiation"
+
+    @staticmethod
+    def get_cce_instantiations_ctx_id(cce_id):
+        return cce_id + "_instantiation"
+
+    @staticmethod
+    def get_cci_instantiations_ctx_id(cci_id):
+        return cci_id + "_instantiation"
