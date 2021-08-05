@@ -26,17 +26,12 @@ class ProvLake:
             db_name: str,
             wf_exec_id=None
     ) -> ManagedPersister:
-
         should_send_to_service = False
         if service_url is not None:
             should_send_to_service = True
 
         if not bag_size:
             bag_size = int(os.getenv("PROV_BAG_SIZE", 1))
-
-        #self.last_task_id = 0
-        #task_id = str(self.last_task_id) + "_" + str(id(self)) if self.cores > 1 else str(self.last_task_id)
-        #self.tasks = dict()
 
         if not should_send_to_service:
             assert should_send_to_file is True, "If you are using ProvLake in offline mode, " \

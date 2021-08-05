@@ -111,24 +111,24 @@ class StandardNamesAndIds:
 
     @staticmethod
     def get_wfe_ctx_id(wfe_id):
-        return wfe_id+"_ctx"
+        return wfe_id+"_wfe_ctx"
 
     @staticmethod
     def get_cce_ctx_id(cce_id):
-        return cce_id + "_ctx"
+        return cce_id + "_cce_ctx"
 
     @staticmethod
     def get_cci_ctx_id(cci_id):
-        return cci_id + "_ctx"
+        return cci_id + "_cci_ctx"
 
     @staticmethod
     def get_wfe_instantiations_ctx_id(wfe_id):
-        return wfe_id + "_instantiation"
+        return wfe_id + "_wfe_instantiation_ctx"
 
     @staticmethod
     def get_cce_instantiations_ctx_id(cce_id):
-        return cce_id + "_instantiation"
+        return cce_id + "_cce_instantiation_ctx"
 
     @staticmethod
     def get_cci_instantiations_ctx_id(cci_id):
-        return cci_id + "_instantiation"
+        return cci_id + "_cci_instantiation_ctx"
