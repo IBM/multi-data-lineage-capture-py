@@ -19,6 +19,12 @@ class Vocabulary:
     WORKFLOW_NAME = "dataflow_name"
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
+    DATA_REFERENCE_TYPE = "data_reference"
+    ATTRIBUTE_VALUE_TYPE = "attribute_value"
+    DICT_TYPE = "dict"
+    LIST_TYPE = "list"
+    DATA_STORE_ID = "data_store_id"
+    PROV_ATTR_TYPE = "prov_attr_type"
 
 
 class Status:
@@ -57,12 +63,18 @@ class StandardNamesAndIds:
         return os.path.abspath(os.path.join(log_dir, 'prov-{}-{}.log'.format(workflow_name, wf_start_time)))
 
     @staticmethod
-    def get_id_atv(attribute, value):
-        if type(value) in [dict, list]:
-            return attribute + "_" + id_hash(str(value))
+    def get_id_atv(attribute, value, value_type=None):
+        if value_type:
+            if value_type == Vocabulary.DATA_REFERENCE_TYPE:
+                return "" + str(value)
+            else:
+                return attribute + "_" + str(value)
         else:
-            # TODO if its a float, replace the dots
-            return attribute + "_" + str(value)
+            if type(value) in [dict, list]:
+                return attribute + "_" + id_hash(str(value))
+            else:
+                # TODO if its a float, replace the dots
+                return attribute + "_" + str(value)
 
     @staticmethod
     def get_wfe_id(workflow_name: str, wf_exec_id):
@@ -78,8 +90,10 @@ class StandardNamesAndIds:
             wfe_id = workflow_name.lower() + "_exec_" + str(wf_exec_id)
         return wfe_id
 
+
+
     @staticmethod
-    def get_dte_id(wfe_id, dt_name:str , prov_task: dict):
+    def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
         task_id = prov_task["id"]
         # TODO better wfe_id + dte_name + timestamp
         if Vocabulary.GENERATED_TIME in prov_task and \
@@ -94,3 +108,27 @@ class StandardNamesAndIds:
             dte_id = wfe_id + "_" + dt_name + "_" + str(task_id)
 
         return dte_id
+
+    @staticmethod
+    def get_wfe_ctx_id(wfe_id):
+        return wfe_id+"_wfe_ctx"
+
+    @staticmethod
+    def get_cce_ctx_id(cce_id):
+        return cce_id + "_cce_ctx"
+
+    @staticmethod
+    def get_cci_ctx_id(cci_id):
+        return cci_id + "_cci_ctx"
+
+    @staticmethod
+    def get_wfe_instantiations_ctx_id(wfe_id):
+        return wfe_id + "_wfe_instantiation_ctx"
+
+    @staticmethod
+    def get_cce_instantiations_ctx_id(cce_id):
+        return cce_id + "_cce_instantiation_ctx"
+
+    @staticmethod
+    def get_cci_instantiations_ctx_id(cci_id):
+        return cci_id + "_cci_instantiation_ctx"

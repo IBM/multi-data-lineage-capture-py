@@ -1,17 +1,21 @@
-import traceback
-from requests_futures.sessions import FuturesSession
-from time import sleep
-from urllib.parse import urljoin
-import json
-from requests.exceptions import ConnectionError
-import urllib3
+import os
 from typing import List
-from provlake.persistence.persister import Persister
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-from provlake.model.activity_prov_obj import ProvRequestObj
+import json
 import logging
+import traceback
+from time import sleep
+import urllib3
 
-offline_prov_log = logging.getLogger("OFFLINE_PROV")
+from requests.exceptions import ConnectionError
+from requests_futures.sessions import FuturesSession
+from urllib.parse import urljoin
+
+from provlake.persistence.persister import Persister
+from provlake.model.activity_prov_obj import ProvRequestObj
+from provlake.utils.constants import StandardNamesAndIds
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 logger = logging.getLogger('PROV')
 
 
@@ -19,7 +23,7 @@ class ManagedPersister(Persister):
 
     def __init__(self, workflow_name: str, wf_start_time: float, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
-                 should_send_to_file: bool = False, should_send_to_service: bool = True):
+                 log_dir:str='.', should_send_to_file: bool = False, should_send_to_service: bool = True):
         super().__init__(workflow_name, wf_start_time, wf_exec_id)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
         self.prospective_url = urljoin(service_url, "prospective-provenance")
@@ -36,6 +40,22 @@ class ManagedPersister(Persister):
             logger.debug("You are using the Service URL: " + service_url)
             self.session = FuturesSession()
 
+        if self.should_send_to_file :
+            if not os.path.exists(log_dir):
+                os.makedirs(os.path.join(os.getcwd(), log_dir))
+
+            self.log_file_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name,
+                                                                               wf_start_time)
+            handler = logging.FileHandler(self.log_file_path, mode='a+', delay=False)
+            self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
+            self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
+            self.offline_prov_log.setLevel("DEBUG")
+            self.offline_prov_log.addHandler(handler)
+            # should_send_to_file = True
+
+    def get_file_path(self):
+        return self.log_file_path
+
     def add_request(self, persistence_request: ProvRequestObj):
         try:
             request_data = persistence_request.as_dict()
@@ -51,6 +71,9 @@ class ManagedPersister(Persister):
             logger.error("[Prov] Unexpected exception")
             traceback.print_exc()
             pass
+
+    def get_file_path(self):
+        return self.log_file_path
 
     def _close(self):
         if self.session:
@@ -78,7 +101,7 @@ class ManagedPersister(Persister):
                     logger.debug("Going to flush a part. Flushing " + str(len(to_flush)) + " out of " +
                                 str(len(self.requests_queue)))
                     if self.should_send_to_file:
-                        offline_prov_log.debug(json.dumps(to_flush))
+                        self.offline_prov_log.debug(json.dumps(to_flush))
                     if self.should_send_to_service:
                         self._send_to_service(to_flush)
 

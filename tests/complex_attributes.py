@@ -63,7 +63,8 @@ in_args = {
         }
     },
     "ordinary_list": [1,2,3],
-    "ordinary_dict": {"a":"b"}
+    "ordinary_dict": {"a": "b"}
+
 }
 with ProvTask(prov, "act_1", in_args) as prov_task:
 
