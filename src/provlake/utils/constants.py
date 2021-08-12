@@ -63,6 +63,12 @@ class StandardNamesAndIds:
         return os.path.abspath(os.path.join(log_dir, 'prov-{}-{}.log'.format(workflow_name, wf_start_time)))
 
     @staticmethod
+    def get_id_att(attribute_name, data_schema_id=None):
+        if data_schema_id:
+            return data_schema_id + "_" + attribute_name
+        return attribute_name
+
+    @staticmethod
     def get_id_atv(attribute, value, value_type=None):
         if value_type:
             if value_type == Vocabulary.DATA_REFERENCE_TYPE:
