@@ -25,6 +25,7 @@ class Vocabulary:
     LIST_TYPE = "list"
     DATA_STORE_ID = "data_store_id"
     PROV_ATTR_TYPE = "prov_attr_type"
+    DATASET_SCHEMAS_KEY = "dataset_schemas"
 
 
 class Status:
@@ -69,18 +70,18 @@ class StandardNamesAndIds:
         return attribute_name
 
     @staticmethod
-    def get_id_atv(attribute, value, value_type=None):
+    def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
             if value_type == Vocabulary.DATA_REFERENCE_TYPE:
                 return "" + str(value)
             else:
-                return attribute + "_" + str(value)
+                return attribute_id + "_" + str(value)
         else:
             if type(value) in [dict, list]:
-                return attribute + "_" + id_hash(str(value))
+                return attribute_id + "_" + id_hash(str(value))
             else:
                 # TODO if its a float, replace the dots
-                return attribute + "_" + str(value)
+                return attribute_id + "_" + str(value)
 
     @staticmethod
     def get_wfe_id(workflow_name: str, wf_exec_id):
