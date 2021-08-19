@@ -1,4 +1,5 @@
 import os
+import uuid
 from .prov_utils import convert_timestamp, id_hash
 
 
@@ -9,6 +10,7 @@ class Vocabulary:
     GENERATED_TIME = "generatedTime"
     STATUS = "status"
     VALUES = "values"
+    DATASET_ITEM_ORDER = "order"
     STDOUT = "stdout"
     STDERR = "stderr"
     PERSON = "person"
@@ -20,12 +22,21 @@ class Vocabulary:
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
     DATA_REFERENCE_TYPE = "data_reference"
+    DATA_REFERENCE_TYPE_AS_IS = "data_reference_as_is"
     ATTRIBUTE_VALUE_TYPE = "attribute_value"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
+    DATASET_TYPE = "dataset"
     DATA_STORE_ID = "data_store_id"
     PROV_ATTR_TYPE = "prov_attr_type"
     DATASET_SCHEMAS_KEY = "dataset_schemas"
+    DATASET_ITEM = "dataset_item"
+    DATASET_ID = "dataset_id"
+    DATASET_SCHEMA_ID = "dataset_schema_id"
+
+class FileTypes:
+
+    CSV = "CSV"
 
 
 class Status:
@@ -70,10 +81,18 @@ class StandardNamesAndIds:
         return attribute_name
 
     @staticmethod
+    def get_id_dataset(dataset_name):
+        return dataset_name + "_" + str(uuid.uuid4())
+
+    @staticmethod
     def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
             if value_type == Vocabulary.DATA_REFERENCE_TYPE:
                 return "" + str(value)
+            if value_type == Vocabulary.DATA_REFERENCE_TYPE_AS_IS:
+                return "" + str(value)
+            elif value_type == Vocabulary.DATASET_ITEM:
+                return "dataset_item_"+str(uuid.uuid4())
             else:
                 return attribute_id + "_" + str(value)
         else:
