@@ -177,7 +177,7 @@ class StandardNamesAndIds:
 
     @staticmethod
     def get_data_store_id(data_store_name):
-        return data_store_name + "_id"
+        return data_store_name
 
     @staticmethod
     def get_data_store_ctx_id(data_store_id):
@@ -193,7 +193,7 @@ class StandardNamesAndIds:
 
     @staticmethod
     def get_dataset_schema_id(dataset_schema_name, database_schema_id):
-        return dataset_schema_name + "_" + dataset_schema_name
+        return database_schema_id + "_" + dataset_schema_name
 
     @staticmethod
     def get_fdw_attribute_id(attribute_name, prefix):
