@@ -34,6 +34,22 @@ class Vocabulary:
     DATASET_ID = "dataset_id"
     DATASET_SCHEMA_ID = "dataset_schema_id"
 
+class DataStoreConfiguration:
+    DATABASES_KEY = "databases"
+    DATABASES_SCHEMAS_KEY = "database_schemas"
+    DATASETS_SCHEMAS_KEY = "dataset_schemas"
+    ATTRIBUTES_KEY = "attributes"
+    IDENTIFIER_KEY = "identifier"
+
+class FdwMapping:
+    FDW_MAPPING = "fdw_mapping"
+    FDW_TYPE = "fdw"
+    FDW_ATTRIBUTE_MAPPINGS = "attribute_mappings"
+    FDW_DATA_STORE_FIELD = "data_store"
+    FDW_DATABASE_FIELD = "database"
+    FDW_DATABASE_SCHEMA_FIELD = "database_schema"
+    FDW_DATASET_SCHEMA_FIELD = "dataset_schema"
+
 class FileTypes:
 
     CSV = "CSV"
@@ -158,3 +174,27 @@ class StandardNamesAndIds:
     @staticmethod
     def get_cci_instantiations_ctx_id(cci_id):
         return cci_id + "_cci_instantiation_ctx"
+
+    @staticmethod
+    def get_data_store_id(data_store_name):
+        return data_store_name + "_id"
+
+    @staticmethod
+    def get_data_store_ctx_id(data_store_id):
+        return data_store_id + "_ctx"
+
+    @staticmethod
+    def get_database_id(database_name, data_store_id):
+        return data_store_id + "_" + database_name
+
+    @staticmethod
+    def get_database_schema_id(database_schema_name, database_id):
+        return database_id + "_" + database_schema_name
+
+    @staticmethod
+    def get_dataset_schema_id(dataset_schema_name, database_schema_id):
+        return dataset_schema_name + "_" + dataset_schema_name
+
+    @staticmethod
+    def get_fdw_attribute_id(attribute_name, prefix):
+        return prefix + "_" + attribute_name
