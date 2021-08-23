@@ -176,6 +176,10 @@ class StandardNamesAndIds:
         return cci_id + "_cci_instantiation_ctx"
 
     @staticmethod
+    def get_id_prj(project_name):
+        return project_name
+
+    @staticmethod
     def get_data_store_id(data_store_name):
         return data_store_name
 
