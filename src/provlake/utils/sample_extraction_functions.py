@@ -4,7 +4,7 @@ from provlake.utils.args_handler import get_dict, get_list, get_dataset, get_rec
     add_custom_metadata, get_dataset_item
 
 
-def csv_extraction_function(file_path, dataset_name) -> List[Dict]:
+def csv_extraction_function(file_path, dataset_name) -> dict:
     args_list = []
     df = pd.read_csv(file_path)
     i = 0
@@ -15,7 +15,7 @@ def csv_extraction_function(file_path, dataset_name) -> List[Dict]:
     return {dataset_name: get_list(args_list)}
 
 
-def city_csv_extraction_function(file_path, dataset_name) -> List[Dict]:
+def city_csv_extraction_function(file_path, dataset_name) -> dict:
     args_list = []
     df = pd.read_csv(file_path)
     i = 0
