@@ -77,7 +77,7 @@ def get_data_reference(value, data_store_id=None) -> dict:
         Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATA_REFERENCE_TYPE
     }
     if data_store_id is not None:
-        ret[data_store_id] = data_store_id
+        ret[Vocabulary.DATA_STORE_ID] = data_store_id
     return ret
 
 
@@ -87,7 +87,7 @@ def get_data_reference_as_is(value, data_store_id=None) -> dict:
         Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATA_REFERENCE_TYPE_AS_IS
     }
     if data_store_id is not None:
-        ret[data_store_id] = data_store_id
+        ret[Vocabulary.DATA_STORE_ID] = data_store_id
     return ret
 
 

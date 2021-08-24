@@ -104,9 +104,9 @@ class StandardNamesAndIds:
     def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
             if value_type == Vocabulary.DATA_REFERENCE_TYPE:
-                return "" + str(value)
+                return attribute_id + "_" + str(value)
             if value_type == Vocabulary.DATA_REFERENCE_TYPE_AS_IS:
-                return "" + str(value)
+                return str(value)
             elif value_type == Vocabulary.DATASET_ITEM:
                 return "dataset_item_"+str(uuid.uuid4())
             else:
