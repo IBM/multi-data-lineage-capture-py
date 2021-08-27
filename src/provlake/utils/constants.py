@@ -21,18 +21,26 @@ class Vocabulary:
     WORKFLOW_NAME = "dataflow_name"
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
-    DATA_REFERENCE_TYPE = "data_reference"
-    DATA_REFERENCE_TYPE_AS_IS = "data_reference_as_is"
-    ATTRIBUTE_VALUE_TYPE = "attribute_value"
-    DICT_TYPE = "dict"
-    LIST_TYPE = "list"
-    DATASET_TYPE = "dataset"
-    DATA_STORE_ID = "data_store_id"
     PROV_ATTR_TYPE = "prov_attr_type"
+
     DATASET_SCHEMAS_KEY = "dataset_schemas"
     DATASET_ITEM = "dataset_item"
     DATASET_ID = "dataset_id"
     DATASET_SCHEMA_ID = "dataset_schema_id"
+    DATA_STORE_ID = "data_store_id"
+
+    # Types:
+    DATA_REFERENCE_TYPE = "data_reference"
+    KG_REFERENCE_TYPE = "kg_reference"
+    ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value_with_custom_metadata"
+    DICT_TYPE = "dict"
+    LIST_TYPE = "list"
+    SIMPLE_ATV_TYPE = "simple_attribute_value"
+    SIMPLE_LIST_TYPE = "simple_list"
+    SIMPLE_DICT_TYPE = "simple_dict"
+    DATASET_TYPE = "dataset"
+
+
 
 class DataStoreConfiguration:
     DATABASES_KEY = "databases"
@@ -103,10 +111,8 @@ class StandardNamesAndIds:
     @staticmethod
     def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
-            if value_type == Vocabulary.DATA_REFERENCE_TYPE:
+            if value_type in {Vocabulary.DATA_REFERENCE_TYPE, Vocabulary.KG_REFERENCE_TYPE}:
                 return attribute_id + "_" + str(value)
-            if value_type == Vocabulary.DATA_REFERENCE_TYPE_AS_IS:
-                return str(value)
             elif value_type == Vocabulary.DATASET_ITEM:
                 return "dataset_item_"+str(uuid.uuid4())
             else:
@@ -202,3 +208,7 @@ class StandardNamesAndIds:
     @staticmethod
     def get_fdw_attribute_id(attribute_name, prefix):
         return prefix + "_" + attribute_name
+
+    @staticmethod
+    def get_dataset_ctx_id(dataset_id):
+        return dataset_id + "_dataset_ctx"

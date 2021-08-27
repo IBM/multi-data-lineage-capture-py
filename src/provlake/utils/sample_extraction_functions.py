@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import List, Dict
-from provlake.utils.args_handler import get_dict, get_list, get_dataset, get_recursive_dicts, get_data_reference_as_is, \
+from provlake.utils.args_handler import get_dict, get_list, get_dataset, get_recursive_dicts, get_kg_reference, \
     add_custom_metadata, get_dataset_item
 
 

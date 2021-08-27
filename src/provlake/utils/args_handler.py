@@ -81,18 +81,17 @@ def get_data_reference(value, data_store_id=None) -> dict:
     return ret
 
 
-def get_data_reference_as_is(value, data_store_id=None) -> dict:
+def get_kg_reference(value, data_store_id=None) -> dict:
     ret = {
         Vocabulary.VALUES: value,
-        Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATA_REFERENCE_TYPE_AS_IS
+        Vocabulary.PROV_ATTR_TYPE: Vocabulary.KG_REFERENCE_TYPE
     }
     if data_store_id is not None:
         ret[Vocabulary.DATA_STORE_ID] = data_store_id
     return ret
 
 
-
-def get_dataset_item(values, order:int=None) -> dict:
+def get_dataset_item(values, order: int=None) -> dict:
     ret = {
         Vocabulary.VALUES: values,
         Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATASET_ITEM
@@ -100,3 +99,16 @@ def get_dataset_item(values, order:int=None) -> dict:
     if order is not None:
         ret[Vocabulary.DATASET_ITEM_ORDER] = order
     return ret
+
+
+def get_attribute_value_type(attribute_value) -> str:
+    if type(attribute_value) in [int, str, bool, float]:
+        _type = Vocabulary.SIMPLE_ATV_TYPE
+    elif type(attribute_value) == list:
+        _type = Vocabulary.SIMPLE_LIST_TYPE
+    else:
+        if Vocabulary.PROV_ATTR_TYPE in attribute_value:
+            _type = attribute_value[Vocabulary.PROV_ATTR_TYPE]
+        else:
+            _type = Vocabulary.SIMPLE_DICT_TYPE
+    return _type

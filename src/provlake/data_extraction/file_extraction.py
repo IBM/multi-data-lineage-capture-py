@@ -19,7 +19,7 @@ class FileExtraction(object):
         self._extraction_function = extraction_function
         self._type_ = type_
         self._dataset_name = dataset_name
-        self._datastore_id = "datastore_id" #TODO
+        self._datastore_id = "FileSystem1" #TODO remove this hardcoded id
         self._dataset_schema_id = dataset_schema_id
         # TODO check if this argument should be mandatory
 
