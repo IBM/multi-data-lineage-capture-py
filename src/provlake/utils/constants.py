@@ -202,3 +202,12 @@ class StandardNamesAndIds:
     @staticmethod
     def get_fdw_attribute_id(attribute_name, prefix):
         return prefix + "_" + attribute_name
+
+    @staticmethod
+    def get_domain_class_id(domain_class_name):
+        return domain_class_name + "_class"
+
+    @staticmethod
+    def get_domain_class_schema_id(domain_class_name):
+        return domain_class_name + "_schema"
+
