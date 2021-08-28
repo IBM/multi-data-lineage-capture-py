@@ -106,8 +106,9 @@ class StandardNamesAndIds:
         return attribute_name
 
     @staticmethod
-    def get_id_dataset(dataset_name):
-        return dataset_name + "_" + str(uuid.uuid4())
+    def get_id_dataset(dte_id):
+        # Here we expact that a dataset is generated in an "Data Extraction" data transformation
+        return "dataset_" + dte_id
 
     @staticmethod
     def get_id_atv(attribute_id, value, value_type=None):
