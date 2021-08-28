@@ -21,6 +21,7 @@ class Vocabulary:
     WORKFLOW_NAME = "dataflow_name"
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
+    DTE_TYPE = "type"
     PROV_ATTR_TYPE = "prov_attr_type"
 
     DATASET_SCHEMAS_KEY = "dataset_schemas"
@@ -32,7 +33,7 @@ class Vocabulary:
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
     KG_REFERENCE_TYPE = "kg_reference"
-    ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value_with_custom_metadata"
+    ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
     SIMPLE_ATV_TYPE = "simple_attribute_value"

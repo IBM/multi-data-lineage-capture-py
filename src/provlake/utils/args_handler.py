@@ -65,7 +65,7 @@ def add_custom_metadata(value, custom_metadata: dict = None) -> dict:
     if not custom_metadata:
         return value
     return {
-        Vocabulary.PROV_ATTR_TYPE: Vocabulary.ATTRIBUTE_VALUE_TYPE,
+        Vocabulary.PROV_ATTR_TYPE: Vocabulary.ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE,
         Vocabulary.VALUES: value,
         Vocabulary.CUSTOM_METADATA: custom_metadata
     }
@@ -102,13 +102,14 @@ def get_dataset_item(values, order: int=None) -> dict:
 
 
 def get_attribute_value_type(attribute_value) -> str:
-    if type(attribute_value) in [int, str, bool, float]:
-        _type = Vocabulary.SIMPLE_ATV_TYPE
+    if attribute_value is None:
+        return Vocabulary.SIMPLE_ATV_TYPE
+    elif type(attribute_value) in [int, str, bool, float]:
+        return Vocabulary.SIMPLE_ATV_TYPE
     elif type(attribute_value) == list:
-        _type = Vocabulary.SIMPLE_LIST_TYPE
+        return Vocabulary.SIMPLE_LIST_TYPE
     else:
         if Vocabulary.PROV_ATTR_TYPE in attribute_value:
-            _type = attribute_value[Vocabulary.PROV_ATTR_TYPE]
+            return attribute_value[Vocabulary.PROV_ATTR_TYPE]
         else:
-            _type = Vocabulary.SIMPLE_DICT_TYPE
-    return _type
+            return Vocabulary.SIMPLE_DICT_TYPE
