@@ -42,13 +42,13 @@ class Vocabulary:
     DATASET_TYPE = "dataset"
 
 
-
 class DataStoreConfiguration:
     DATABASES_KEY = "databases"
     DATABASES_SCHEMAS_KEY = "database_schemas"
     DATASETS_SCHEMAS_KEY = "dataset_schemas"
     ATTRIBUTES_KEY = "attributes"
     IDENTIFIER_KEY = "identifier"
+
 
 class FdwMapping:
     FDW_MAPPING = "fdw_mapping"
@@ -58,6 +58,7 @@ class FdwMapping:
     FDW_DATABASE_FIELD = "database"
     FDW_DATABASE_SCHEMA_FIELD = "database_schema"
     FDW_DATASET_SCHEMA_FIELD = "dataset_schema"
+
 
 class FileTypes:
 
@@ -96,7 +97,7 @@ class PersistenceStrategy:
 class StandardNamesAndIds:
 
     @staticmethod
-    def get_prov_log_file_path(log_dir:str, workflow_name:str, wf_start_time:float) -> str:
+    def get_prov_log_file_path(log_dir: str, workflow_name:str, wf_start_time: float) -> str:
         return os.path.abspath(os.path.join(log_dir, 'prov-{}-{}.log'.format(workflow_name, wf_start_time)))
 
     @staticmethod
@@ -139,8 +140,6 @@ class StandardNamesAndIds:
         else:
             wfe_id = workflow_name.lower() + "_exec_" + str(wf_exec_id)
         return wfe_id
-
-
 
     @staticmethod
     def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
