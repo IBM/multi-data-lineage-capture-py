@@ -48,7 +48,7 @@ class CSVFileExtraction(FileExtraction):
     def extract(self) -> List[Dict]:
         args = {
             # "file_path": get_data_reference(self._file_path, data_store_id=self._data_store_id),
-            "header": self._header,
+            "header": str(self._header),
             "dataset_type": "CSV"
 
         }
