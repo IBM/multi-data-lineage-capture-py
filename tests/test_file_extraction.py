@@ -16,7 +16,7 @@ class TestMolecules(TestCase):
         prov = ProvLake.get_persister(workflow_name="city_dataset_ingestion")
         workflow = ProvWorkflow(prov).begin()
 
-        items = CSVFileExtraction(prov, dataset_name="cities", file_path="test_data/test_csv.csv",
+        items = CSVFileExtraction(prov, dataset_name="cities", file_path_or_buffer="test_data/test_csv.csv",
                                   extraction_function=city_csv_extraction_function).extract()
 
         # for item in items:
