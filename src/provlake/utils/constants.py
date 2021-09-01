@@ -21,18 +21,26 @@ class Vocabulary:
     WORKFLOW_NAME = "dataflow_name"
     ACT_TYPE = "act_type"
     ATTRIBUTE_ASSOCIATIONS = "attribute_associations"
-    DATA_REFERENCE_TYPE = "data_reference"
-    DATA_REFERENCE_TYPE_AS_IS = "data_reference_as_is"
-    ATTRIBUTE_VALUE_TYPE = "attribute_value"
-    DICT_TYPE = "dict"
-    LIST_TYPE = "list"
-    DATASET_TYPE = "dataset"
-    DATA_STORE_ID = "data_store_id"
+    DTE_TYPE = "type"
     PROV_ATTR_TYPE = "prov_attr_type"
+
     DATASET_SCHEMAS_KEY = "dataset_schemas"
     DATASET_ITEM = "dataset_item"
     DATASET_ID = "dataset_id"
     DATASET_SCHEMA_ID = "dataset_schema_id"
+    DATA_STORE_ID = "data_store_id"
+
+    # Types:
+    DATA_REFERENCE_TYPE = "data_reference"
+    KG_REFERENCE_TYPE = "kg_reference"
+    ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value"
+    DICT_TYPE = "dict"
+    LIST_TYPE = "list"
+    SIMPLE_ATV_TYPE = "simple_attribute_value"
+    SIMPLE_LIST_TYPE = "simple_list"
+    SIMPLE_DICT_TYPE = "simple_dict"
+    DATASET_TYPE = "dataset"
+
 
 class DataStoreConfiguration:
     DATABASES_KEY = "databases"
@@ -40,6 +48,7 @@ class DataStoreConfiguration:
     DATASETS_SCHEMAS_KEY = "dataset_schemas"
     ATTRIBUTES_KEY = "attributes"
     IDENTIFIER_KEY = "identifier"
+
 
 class FdwMapping:
     FDW_MAPPING = "fdw_mapping"
@@ -49,6 +58,7 @@ class FdwMapping:
     FDW_DATABASE_FIELD = "database"
     FDW_DATABASE_SCHEMA_FIELD = "database_schema"
     FDW_DATASET_SCHEMA_FIELD = "dataset_schema"
+
 
 class FileTypes:
 
@@ -87,7 +97,7 @@ class PersistenceStrategy:
 class StandardNamesAndIds:
 
     @staticmethod
-    def get_prov_log_file_path(log_dir:str, workflow_name:str, wf_start_time:float) -> str:
+    def get_prov_log_file_path(log_dir: str, workflow_name:str, wf_start_time: float) -> str:
         return os.path.abspath(os.path.join(log_dir, 'prov-{}-{}.log'.format(workflow_name, wf_start_time)))
 
     @staticmethod
@@ -97,16 +107,15 @@ class StandardNamesAndIds:
         return attribute_name
 
     @staticmethod
-    def get_id_dataset(dataset_name):
-        return dataset_name + "_" + str(uuid.uuid4())
+    def get_id_dataset(dte_id):
+        # Here we expact that a dataset is generated in an "Data Extraction" data transformation
+        return "dataset_" + dte_id
 
     @staticmethod
     def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
-            if value_type == Vocabulary.DATA_REFERENCE_TYPE:
-                return "" + str(value)
-            if value_type == Vocabulary.DATA_REFERENCE_TYPE_AS_IS:
-                return "" + str(value)
+            if value_type in {Vocabulary.DATA_REFERENCE_TYPE, Vocabulary.KG_REFERENCE_TYPE}:
+                return attribute_id + "_" + str(value)
             elif value_type == Vocabulary.DATASET_ITEM:
                 return "dataset_item_"+str(uuid.uuid4())
             else:
@@ -131,8 +140,6 @@ class StandardNamesAndIds:
         else:
             wfe_id = workflow_name.lower() + "_exec_" + str(wf_exec_id)
         return wfe_id
-
-
 
     @staticmethod
     def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
@@ -204,9 +211,14 @@ class StandardNamesAndIds:
         return prefix + "_" + attribute_name
 
     @staticmethod
+    def get_dataset_ctx_id(dataset_id):
+        return dataset_id + "_dataset_ctx"
+
+    @staticmethod
     def get_domain_class_id(domain_class_name):
         return domain_class_name + "_class"
-
+        
+    
     @staticmethod
     def get_domain_class_schema_id(domain_class_name):
         return domain_class_name + "_schema"
