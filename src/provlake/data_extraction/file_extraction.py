@@ -38,12 +38,13 @@ class FileExtraction(object):
 class CSVFileExtraction(FileExtraction):
 
     def __init__(self, prov: Persister, file_path_or_buffer: str, dataset_name: str = None, dataset_id = None,
-                 dataset_schema_id=None, header: List = None, separator=',', data_store_id=None,
+                 dataset_schema_id=None, attribute_names: List = None, separator=',', data_store_id=None,
                  extraction_function=csv_extraction_function, extraction_function_kwargs:dict= {}):
         super().__init__(prov, file_path_or_buffer=file_path_or_buffer, type_=FileTypes.CSV, extraction_function=extraction_function,
                          dataset_name=dataset_name, dataset_id=dataset_id, dataset_schema_id=dataset_schema_id,
                          extraction_function_kwargs=extraction_function_kwargs)
-        self._header = header
+        self._header = attribute_names
+        self.generated_time = None
 
     def extract(self) -> List[Dict]:
         args = {
@@ -62,4 +63,5 @@ class CSVFileExtraction(FileExtraction):
         with ProvTask(self._prov, self._extraction_name, in_arg, custom_metadata={"type": "CSVFileExtraction"}) as provtask:
             args_list = self._extraction_function(self._file_path_or_buffer, **self._extraction_function_kwargs)
             provtask.end(args_list)
+            self.generated_time = provtask.generated_time
         return args_list
