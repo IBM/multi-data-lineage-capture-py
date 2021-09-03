@@ -82,30 +82,28 @@ class ProvTask(ActivityCapture):
     def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args=dict(),
                  parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None, task_id=None,
                  custom_metadata: dict = None, attribute_associations: dict = None, generated_time: float=None):
-        super().__init__(prov_persister, custom_metadata)
+        super().__init__(prov_persister, custom_metadata, generated_time)
         if self._prov_persister is None:
             return
 
         self.stored_output = False
         self.input_args = input_args
-        if not generated_time:
-            generated_time = time()
         if not task_id:
-            task_id = generated_time
+            task_id = self.generated_time
 
         self.prov_obj = TaskProvRequestObj(dt_name=data_transformation_name,
                                            type_=DataTransformationRequestType.GENERATE,
                                            wf_exec_id=prov_persister.get_wf_exec_id(),
                                            workflow_name=prov_persister.get_workflow_name(),
                                            status=Status.GENERATED,
-                                           generated_time=generated_time,
+                                           generated_time=self.generated_time,
                                            parent_cycle_name=parent_cycle_name,
                                            parent_cycle_iteration=parent_cycle_iteration,
                                            person_id=person_id,
                                            task_id=task_id,
                                            custom_metadata=self.get_custom_metadata(),
                                            attribute_associations=attribute_associations
-                                          )
+                                           )
 
         self._prov_persister.add_request(self.prov_obj)
 
