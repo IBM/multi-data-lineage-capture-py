@@ -38,12 +38,13 @@ class FileExtraction(object):
 class CSVFileExtraction(FileExtraction):
 
     def __init__(self, prov: Persister, file_path_or_buffer: str, dataset_name: str = None, dataset_id = None,
-                 dataset_schema_id=None, header: List = None, separator=',', data_store_id=None,
-                 extraction_function=csv_extraction_function, extraction_function_kwargs:dict= {}):
+                 dataset_schema_id=None, header: List = None, no_rows: int = None, separator=',', data_store_id=None,
+                 extraction_function=csv_extraction_function, extraction_function_kwargs: dict = {}):
         super().__init__(prov, file_path_or_buffer=file_path_or_buffer, type_=FileTypes.CSV, extraction_function=extraction_function,
                          dataset_name=dataset_name, dataset_id=dataset_id, dataset_schema_id=dataset_schema_id,
                          extraction_function_kwargs=extraction_function_kwargs)
         self._header = header
+        self._no_rows = no_rows
         self.generated_time = None
 
     def extract(self) -> List[Dict]:
@@ -51,8 +52,9 @@ class CSVFileExtraction(FileExtraction):
             # "file_path": get_data_reference(self._file_path, data_store_id=self._data_store_id),
             "header": str(self._header),
             "dataset_type": "CSV"
-
         }
+        if self._no_rows is not None:
+            args["no_rows"] = self._no_rows
 
         if not isinstance(self._file_path_or_buffer, StringIO):
             args["file_path"] = self._file_path_or_buffer

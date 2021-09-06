@@ -8,6 +8,8 @@ def csv_extraction_function(file_path_or_buffer, dataset_schema_id: str, dataset
     """default csv extraction"""
     args_list = []
     df = pd.read_csv(file_path_or_buffer)
+    non_null_columns = [col for col in df.columns if df.loc[:, col].notna().any()]
+    df = df[non_null_columns]
 
     i = 0
     for index, row in df.iterrows():
