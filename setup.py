@@ -4,9 +4,10 @@ from setuptools import setup, find_packages
 with open('requirements.txt') as f:
     requires = f.read().splitlines()
 
+VERSION = open('version', 'r').read().strip()
 
 setup(name='provlake',
-      version='0.1.5',
+      version=VERSION,
       description='A Python lib to capture multiworkflow provenance data from Python Scripts',
       url='http://ibm.biz/provlake',
       author='IBM Research',
@@ -17,6 +18,4 @@ setup(name='provlake',
       packages=find_packages(where='src'),
       python_requires='>=3.6',
       include_package_data=True,
-      dependency_links=['http://github.com/IBM/multi-data-lineage-capture-py/tarball/master#egg=package-0.1.2'],
-      zip_safe=False
-)
+      zip_safe=False)

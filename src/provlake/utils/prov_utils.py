@@ -35,3 +35,5 @@ def stringfy_inner_dicts_in_dicts(_dict: dict) -> dict:
 
 def stringfy_inner_dicts_in_lists(_list: list) -> list:
     return [json.dumps(el, indent=JSON_INDENT_SIZE) if type(el) == dict else el for el in _list]
+
+

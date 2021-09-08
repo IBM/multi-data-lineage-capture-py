@@ -1,4 +1,5 @@
 pyyaml
 requests-futures
 numpy
+pandas
 

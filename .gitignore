@@ -5,3 +5,4 @@
 **/*.log
 /.idea
 .pytest_cache/
+venv/*
