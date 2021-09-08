@@ -2,7 +2,7 @@ import os
 import uuid
 from .prov_utils import convert_timestamp, id_hash
 
-SERVER_API_ROOT = "/api/lineage"
+SERVER_API_ROOT = "/provenance/api"
 
 class Vocabulary:
 
