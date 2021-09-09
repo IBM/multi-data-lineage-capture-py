@@ -13,10 +13,24 @@ logger = logging.getLogger('PROV')
 
 class ProvWorkflow(ActivityCapture):
 
-    def __init__(self, prov_persister: Persister, custom_metadata:dict=None):
+    def __init__(self, prov_persister: Persister,  workflow_name, custom_metadata: dict = None,
+                 wf_exec_id=None, wf_start_time: float = None):
         super().__init__(prov_persister, custom_metadata)
         if self._prov_persister is None:
             return
+
+        self.workflow_name = workflow_name
+
+        if wf_start_time is None:
+            self.wf_start_time = time()
+        else:
+            self.wf_start_time = wf_start_time
+
+        if wf_exec_id is None:
+            self.wf_exec_id = self.wf_start_time
+        else:
+            self.wf_exec_id = wf_exec_id
+
         self.stored_output = False
 
     def begin(self) -> 'ProvWorkflow':
@@ -24,9 +38,9 @@ class ProvWorkflow(ActivityCapture):
             return None
         try:
             prov_obj = WorkflowProvRequestObj(
-                wf_exec_id=self._prov_persister.get_wf_exec_id(),
-                workflow_name=self._prov_persister.get_workflow_name(),
-                start_time=self._prov_persister.get_wf_start_time(),
+                wf_exec_id=self.wf_exec_id,
+                workflow_name=self.workflow_name,
+                start_time=self.wf_start_time,
                 status=Status.RUNNING,
                 custom_metadata=self.get_custom_metadata()
             )
@@ -44,9 +58,9 @@ class ProvWorkflow(ActivityCapture):
         try:
             self.stored_output = True
             prov_obj = WorkflowProvRequestObj(
-                wf_exec_id=self._prov_persister.get_wf_exec_id(),
-                workflow_name=self._prov_persister.get_workflow_name(),
-                start_time=self._prov_persister.get_wf_start_time(),
+                wf_exec_id=self.wf_exec_id,
+                workflow_name=self.workflow_name,
+                start_time=self.wf_start_time,
                 end_time=end_time if end_time is not None else time(),
                 status=Status.FINISHED
             )
@@ -79,10 +93,10 @@ class ProvWorkflow(ActivityCapture):
 
 class ProvTask(ActivityCapture):
 
-    def __init__(self, prov_persister: Persister, data_transformation_name: str, input_args=dict(),
+    def __init__(self, prov_workflow: ProvWorkflow, data_transformation_name: str, input_args=dict(),
                  parent_cycle_name: str = None, parent_cycle_iteration=None, person_id: str = None, task_id=None,
                  custom_metadata: dict = None, attribute_associations: dict = None, generated_time: float=None):
-        super().__init__(prov_persister, custom_metadata, generated_time)
+        super().__init__(prov_workflow.get_persister(), custom_metadata, generated_time)
         if self._prov_persister is None:
             return
 
@@ -93,8 +107,8 @@ class ProvTask(ActivityCapture):
 
         self.prov_obj = TaskProvRequestObj(dt_name=data_transformation_name,
                                            type_=DataTransformationRequestType.GENERATE,
-                                           wf_exec_id=prov_persister.get_wf_exec_id(),
-                                           workflow_name=prov_persister.get_workflow_name(),
+                                           wf_exec_id=prov_workflow.wf_exec_id,
+                                           workflow_name=prov_workflow.workflow_name,
                                            status=Status.GENERATED,
                                            generated_time=self.generated_time,
                                            parent_cycle_name=parent_cycle_name,

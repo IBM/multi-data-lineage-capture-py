@@ -10,7 +10,7 @@ class CycleProvRequestObj(ProvRequestObj):
 
     def __init__(self, cycle_name: str, type_: str, iteration_id, workflow_name: str, wf_exec_id: float,
                  values: dict = None, start_time: float = None, end_time: float = None,
-                 stdout: str=None, stderr: str=None, status:str=None, custom_metadata:dict=None):
+                 stdout: str = None, stderr: str = None, status: str = None, custom_metadata: dict=None):
         super().__init__(CycleProvRequestObj.ACT_TYPE, workflow_name, wf_exec_id, custom_metadata)
         assert type_ in [CycleProvRequestObj.INPUT_TYPE, CycleProvRequestObj.OUTPUT_TYPE]
         self.cycle_name = cycle_name

@@ -2,7 +2,7 @@ from typing import List, Dict
 from io import StringIO
 
 from provlake.persistence.persister import Persister
-from provlake.capture import ProvTask
+from provlake.capture import ProvTask, ProvWorkflow
 from provlake.utils.constants import FileTypes
 from provlake.utils.sample_extraction_functions import csv_extraction_function
 from provlake.utils.args_handler import get_data_reference, get_dict
@@ -14,9 +14,9 @@ __metaclass__ = ABCMeta
 
 class FileExtraction(object):
 
-    def __init__(self, prov: Persister, file_path_or_buffer: str, type_: str, extraction_function, dataset_name: str = None,
-                 dataset_id = None, dataset_schema_id=None, data_store_id=None, extraction_function_kwargs:dict={}):
-        self._prov = prov
+    def __init__(self, prov_wf: ProvWorkflow, file_path_or_buffer: str, type_: str, extraction_function, dataset_name: str = None,
+                 dataset_id=None, dataset_schema_id=None, data_store_id=None, extraction_function_kwargs: dict={}):
+        self.prov_wf = prov_wf
         self._file_path_or_buffer = file_path_or_buffer
         self._extraction_function = extraction_function
         self._extraction_function_kwargs = extraction_function_kwargs
@@ -37,10 +37,10 @@ class FileExtraction(object):
 
 class CSVFileExtraction(FileExtraction):
 
-    def __init__(self, prov: Persister, file_path_or_buffer: str, dataset_name: str = None, dataset_id = None,
+    def __init__(self, prov_wf: ProvWorkflow, file_path_or_buffer: str, dataset_name: str = None, dataset_id = None,
                  dataset_schema_id=None, header: List = None, no_rows: int = None, separator=',', data_store_id=None,
                  extraction_function=csv_extraction_function, extraction_function_kwargs: dict = {}):
-        super().__init__(prov, file_path_or_buffer=file_path_or_buffer, type_=FileTypes.CSV, extraction_function=extraction_function,
+        super().__init__(prov_wf, file_path_or_buffer=file_path_or_buffer, type_=FileTypes.CSV, extraction_function=extraction_function,
                          dataset_name=dataset_name, dataset_id=dataset_id, dataset_schema_id=dataset_schema_id,
                          extraction_function_kwargs=extraction_function_kwargs)
         self._header = header
@@ -62,7 +62,7 @@ class CSVFileExtraction(FileExtraction):
             self._file_path_or_buffer.seek(0)
 
         in_arg = {"input_data": get_dict(args)}
-        with ProvTask(self._prov, self._extraction_name, in_arg, custom_metadata={"type": "CSVFileExtraction"}) as provtask:
+        with ProvTask(self.prov_wf, self._extraction_name, in_arg, custom_metadata={"type": "CSVFileExtraction"}) as provtask:
             args_list = self._extraction_function(self._file_path_or_buffer, **self._extraction_function_kwargs)
             provtask.end(args_list)
             self.generated_time = provtask.generated_time

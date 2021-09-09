@@ -3,7 +3,7 @@ from provlake.persistence.unmanaged_persister import UnmanagedPersister
 from provlake.persistence.managed_persister import ManagedPersister
 from provlake.capture import ProvWorkflow
 from provlake.utils.constants import StandardNamesAndIds
-from time import time
+import uuid
 import os
 import logging
 
@@ -14,17 +14,14 @@ class ProvLake:
 
     @staticmethod
     def _build_managed_persister(
-            workflow_name: str,
             log_dir: str,
-            wf_start_time: float,
             service_url: str,
             should_send_to_file: bool,
             bag_size: int,
-            cores: int,
             context: str,
             with_validation: bool,
             db_name: str,
-            wf_exec_id=None
+            log_file_path: str
     ) -> ManagedPersister:
         should_send_to_service = False
         if service_url is not None:
@@ -39,9 +36,6 @@ class ProvLake:
                                                "'should_send_to_service' parameters."
 
         return ManagedPersister(
-            workflow_name=workflow_name,
-            wf_start_time=wf_start_time,
-            wf_exec_id=wf_exec_id,
             service_url=service_url,
             context=context,
             with_validation=with_validation,
@@ -49,18 +43,18 @@ class ProvLake:
             bag_size=bag_size,
             should_send_to_file=should_send_to_file,
             log_dir=log_dir,
+            log_file_path=log_file_path,
             should_send_to_service=should_send_to_service)
 
     @staticmethod
-    def _build_unmanaged_persister(workflow_name: str, log_dir: str, wf_start_time: float=None,
-                                   wf_exec_id=None) -> UnmanagedPersister:
-        return UnmanagedPersister(workflow_name, wf_start_time, log_dir, wf_exec_id)
+    def _build_unmanaged_persister(log_file_path:str) -> UnmanagedPersister:
+        return UnmanagedPersister(log_file_path)
+
+    _persister_singleton_instance: Persister = None
 
     @staticmethod
     def get_persister(
-            workflow_name: str,
-            wf_start_time: float = None,
-            wf_exec_id=None,
+            log_file_path=None,
             managed_persistence=True,
             context: str = None,
             with_validation: bool = False,
@@ -69,39 +63,32 @@ class ProvLake:
             log_dir='.',
             service_url=None,
             bag_size=None,
-            db_name: str = None,
-            cores=1
+            db_name: str = None
     ) -> Persister:
+        if ProvLake._persister_singleton_instance is None:
 
-        assert workflow_name is not None, "Please inform a name for this workflow."
-        if not wf_start_time:
-            wf_start_time = time()
-        ProvLake._set_log_lvl(log_level)
+            if log_file_path is None:
+                log_file_path = os.path.join(log_dir, "prov-"+str(uuid.uuid4()) + ".log")
 
-        if managed_persistence:
-            persister = ProvLake._build_managed_persister(
-                workflow_name=workflow_name,
-                log_dir=log_dir,
-                wf_start_time=wf_start_time,
-                service_url=service_url,
-                should_send_to_file=should_send_to_file,
-                bag_size=bag_size,
-                cores=cores,
-                context=context,
-                with_validation=with_validation,
-                db_name=db_name,
-                wf_exec_id=wf_exec_id
-            )
+            ProvLake._set_log_lvl(log_level)
 
-        else:
-            persister = ProvLake._build_unmanaged_persister(
-                workflow_name=workflow_name,
-                log_dir=log_dir,
-                wf_start_time=wf_start_time,
-                wf_exec_id=wf_exec_id
-            )
-
-        return persister
+            if managed_persistence:
+                persister = ProvLake._build_managed_persister(
+                    log_dir=log_dir,
+                    service_url=service_url,
+                    should_send_to_file=should_send_to_file,
+                    bag_size=bag_size,
+                    context=context,
+                    with_validation=with_validation,
+                    db_name=db_name,
+                    log_file_path=log_file_path
+                )
+            else:
+                persister = ProvLake._build_unmanaged_persister(
+                    log_file_path
+                )
+            ProvLake._persister_singleton_instance = persister
+        return ProvLake._persister_singleton_instance
 
     @staticmethod
     def _set_log_lvl(log_level):
