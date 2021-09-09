@@ -2,14 +2,31 @@ import os
 import uuid
 from .prov_utils import convert_timestamp, id_hash
 
-SERVER_API_ROOT = "/provenance/api"
-
 
 class Routes:
 
     SERVER_API_ROOT = "/provenance/api"
-
     METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
+
+    CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
+
+    DATA_TRANSFORMATION_EXECUTIONS_BY_WORKFLOW_EXECUTION = \
+        f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/data-transformation-executions"
+
+    DATA_TRANSFORMATION_EXECUTIONS = f"{SERVER_API_ROOT}/data-transformation-executions"
+
+    DATA_TRANSFORMATION_EXECUTIONS_BY_PERSON = \
+        f"{SERVER_API_ROOT}/persons/<path:person_id>/data-transformation-executions"
+
+    WORKFLOW_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions"
+
+    WORKFLOW_EXECUTIONS_BY_WORKFLOW_EXECUTION = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>"
+
+    WORKFLOW_EXECUTIONS_SUMMARY_BY_WORKFLOW_EXECUTION = \
+        f"{SERVER_API_ROOT}/workflow-execution-summaries/<path:workflow_execution_id>"
+
+    PROJECTS = f"{SERVER_API_ROOT}/projects"
+
 
 class Vocabulary:
 
