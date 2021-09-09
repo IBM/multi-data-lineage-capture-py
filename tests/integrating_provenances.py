@@ -24,7 +24,8 @@ class TestIntegratingProvenances(TestCase):
         return persister.get_file_path()
 
     def prov_2(self, log_file_path):
-        persister = ProvLake.get_persister(log_file_path=log_file_path)
+        # TODO finish singleton implementation
+        persister = ProvLake.get_persister()
         prov_wf = ProvWorkflow(persister, workflow_name="integrated_provenance")
         csv_path = "test_data/test_csv.csv"
         extraction_function_kwargs = {
@@ -37,6 +38,8 @@ class TestIntegratingProvenances(TestCase):
         prov_wf.end()
 
 
-    def test(self):
+    def test0(self):
         path = self.prov_1()
         self.prov_2(path)
+
+
