@@ -4,6 +4,13 @@ from .prov_utils import convert_timestamp, id_hash
 
 SERVER_API_ROOT = "/provenance/api"
 
+
+class Routes:
+
+    SERVER_API_ROOT = "/provenance/api"
+
+    METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
+
 class Vocabulary:
 
     START_TIME = "startTime"
