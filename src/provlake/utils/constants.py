@@ -27,6 +27,15 @@ class Routes:
 
     PROJECTS = f"{SERVER_API_ROOT}/projects"
 
+class RoutesTypes:
+
+    WORKFLOW_EXECUTION_ID = "workflow_execution_id"
+    START_TIME = "start_time"
+    END_TIME = "end_time"
+    WORKFLOW_NAME = "workflow_name"
+    STATUS = "status"
+    WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
+
 
 class Vocabulary:
 
