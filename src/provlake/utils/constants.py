@@ -30,11 +30,27 @@ class Routes:
 class RoutesTypes:
 
     WORKFLOW_EXECUTION_ID = "workflow_execution_id"
+    GENERATED_TIME = "generated_time"
     START_TIME = "start_time"
     END_TIME = "end_time"
     WORKFLOW_NAME = "workflow_name"
     STATUS = "status"
     WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
+    DATA_TRANSFORMATION_NAME = "data_transformation_name"
+    DATA_TRANSFORMATION_EXECUTION_ID = "data_transformation_execution_id"
+    INPUT = "input"
+    OUTPUT = "output"
+    ATTRIBUTE_ID = "attribute_id"
+    ATTRIBUTE_VALUE = "attribute_value"
+    ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
+    DATA_STORE_ID = "data_store_id"
+
+class RoutesAttributeValueTypes:
+
+    DICT = "DICT"
+    LIST = "LIST"
+    DATA_REFERENCE = "DATA_REFERENCE"
+
 
 
 class Vocabulary:
