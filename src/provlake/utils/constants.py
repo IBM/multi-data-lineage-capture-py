@@ -139,8 +139,8 @@ class DataTransformationRequestType:
 
 class DataStores:
     RDBMS ='RDBMS'
-    TRIPLESTORE = 'TripleStore'
-    DOCUMENT_STORE = 'DocStore'
+    TRIPLESTORE = 'Triplestore'
+    DOCUMENT_STORE = 'DocumentDBMS'
     OBJECT_STORE = 'ObjectStore'
     FILE_SYSTEM = 'FileSystem'
     VOLUME = 'Volume'
