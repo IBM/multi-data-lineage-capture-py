@@ -137,6 +137,16 @@ class DataTransformationRequestType:
     INPUT = "Input"
     OUTPUT = "Output"
 
+class DataStores:
+    RDBMS ='RDBMS'
+    TRIPLESTORE = 'TripleStore'
+    DOCUMENT_STORE = 'DocStore'
+    OBJECT_STORE = 'ObjectStore'
+    FILE_SYSTEM = 'FileSystem'
+    VOLUME = 'Volume'
+    GRAPH_DBMS = "GraphDB"
+
+    KNOWN_DATA_STORES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM, VOLUME]
 
 class PersistenceStrategy:
 
