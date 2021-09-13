@@ -11,6 +11,7 @@ logger = logging.getLogger('PROV')
 
 
 class ProvLake:
+    _persister_singleton_instance: Persister = None
 
     @staticmethod
     def _build_managed_persister(
@@ -50,7 +51,6 @@ class ProvLake:
     def _build_unmanaged_persister(log_file_path:str) -> UnmanagedPersister:
         return UnmanagedPersister(log_file_path)
 
-    _persister_singleton_instance: Persister = None
 
     @staticmethod
     def get_persister(

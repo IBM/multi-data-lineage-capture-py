@@ -50,7 +50,8 @@ class ManagedPersister(Persister):
             handler = logging.FileHandler(self.log_file_path, mode='a+', delay=False)
             self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
             self.offline_prov_log.setLevel("DEBUG")
-            self.offline_prov_log.addHandler(handler)
+            self._log_handler = handler
+            self.offline_prov_log.addHandler(self._log_handler)
             # should_send_to_file = True
 
     def add_request(self, persistence_request: ProvRequestObj):
@@ -66,7 +67,7 @@ class ManagedPersister(Persister):
             traceback.print_exc()
             pass
 
-    def _close(self):
+    def close(self):
         if self.session:
             logger.info("Waiting to get response from all submitted provenance tasks...")
             while not self.session.executor._work_queue.empty():
@@ -74,6 +75,7 @@ class ManagedPersister(Persister):
                 sleep(0.1)
         # Persist remaining tasks synchronously
         self._flush(all_and_wait=True)
+        self.offline_prov_log.removeHandler(self._log_handler)
         if self.session:
             self.session.close()
 

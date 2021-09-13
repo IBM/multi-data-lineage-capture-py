@@ -16,7 +16,7 @@ class Persister:
     def get_file_path(self)->str:
         return self.log_file_path
 
-    def _close(self):
+    def close(self):
         pass
 
 

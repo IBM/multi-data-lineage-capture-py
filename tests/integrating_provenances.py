@@ -5,6 +5,7 @@ from provlake.data_extraction.file_extraction import CSVFileExtraction
 from provlake.utils.prov_utils import delete_prov_logs
 from provlake.utils.sample_extraction_functions import csv_extraction_function
 from time import sleep
+import logging
 
 
 class TestIntegratingProvenances(TestCase):
@@ -18,28 +19,40 @@ class TestIntegratingProvenances(TestCase):
         prov_wf = ProvWorkflow(persister, workflow_name="integrated_provenance")
         prov_wf.begin()
         in_args = {"sleep_time": 1}
-        with ProvTask(prov_wf, "sleep", in_args):
+        with ProvTask(persister, "sleep", prov_workflow=prov_wf, input_args=in_args):
             sleep(in_args.get("sleep_time"))
 
         return persister.get_file_path()
 
-    def prov_2(self, log_file_path):
-        # TODO finish singleton implementation
+    def prov_3(self):
         persister = ProvLake.get_persister()
         prov_wf = ProvWorkflow(persister, workflow_name="integrated_provenance")
-        csv_path = "test_data/test_csv.csv"
-        extraction_function_kwargs = {
-            "dataset_schema_id": "Cities",
-            "dataset_id": "ds_cities01"
-        }
-        items = CSVFileExtraction(prov_wf, dataset_name="cities", file_path_or_buffer=csv_path,
-                                  extraction_function=csv_extraction_function,
-                                  extraction_function_kwargs=extraction_function_kwargs).extract()
+        in_args = {"sleep_time": 1}
+        with ProvTask(persister, "sleep2", prov_wf, in_args):
+            sleep(in_args.get("sleep_time"))
+
         prov_wf.end()
 
-
-    def test0(self):
+    def test_all(self):
         path = self.prov_1()
-        self.prov_2(path)
+        self.prov_3()
 
+    def test_changing_persister(self):
+        current_persister = ProvLake.get_persister()
+        persister_id = id(current_persister)
+        path = self.prov_1()
 
+        # releasing singleton instance
+        ProvLake._persister_singleton_instance.close()
+        del ProvLake._persister_singleton_instance
+        ProvLake._persister_singleton_instance = None
+
+        current_persister = ProvLake.get_persister()
+        new_persister_id = id(current_persister)
+        self.assertNotEqual(persister_id, new_persister_id, 'there should be a new persister')
+
+        self.prov_3()
+        print("a")
+
+    def test_open_ended_workflow(self):
+        path = self.prov_1()
