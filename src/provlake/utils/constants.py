@@ -48,6 +48,7 @@ class EndpointsTypes:
     ATTRIBUTE_VALUE = "attribute_value"
     ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
     DATA_STORE_ID = "data_store_id"
+    CUSTOM_METADATA = "custom_metadata"
 
 class Vocabulary:
 
