@@ -83,6 +83,7 @@ class Vocabulary:
     DATA_REFERENCE_TYPE = "data_reference"
     KG_REFERENCE_TYPE = "kg_reference"
     ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value"
+    CUSTOM_METADA = "custom_metadata"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
     SIMPLE_ATV_TYPE = "simple_attribute_value"
