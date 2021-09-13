@@ -5,6 +5,8 @@ from .prov_utils import convert_timestamp, id_hash
 
 class Routes:
 
+    # This class defines the routes provided by HKProv service's endpoints defined in the OpenAPI contract
+
     SERVER_API_ROOT = "/provenance/api"
     METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
 
@@ -27,7 +29,9 @@ class Routes:
 
     PROJECTS = f"{SERVER_API_ROOT}/projects"
 
-class RoutesTypes:
+class EndpointsTypes:
+
+    # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
 
     WORKFLOW_EXECUTION_ID = "workflow_execution_id"
     GENERATED_TIME = "generated_time"
@@ -44,14 +48,6 @@ class RoutesTypes:
     ATTRIBUTE_VALUE = "attribute_value"
     ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
     DATA_STORE_ID = "data_store_id"
-
-class RoutesAttributeValueTypes:
-
-    DICT = "DICT"
-    LIST = "LIST"
-    DATA_REFERENCE = "DATA_REFERENCE"
-
-
 
 class Vocabulary:
 
