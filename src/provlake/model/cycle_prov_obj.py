@@ -1,16 +1,18 @@
+from typing import Optional
+
 from provlake.model.activity_prov_obj import ProvRequestObj
 from provlake.utils.constants import Vocabulary
 
 
 class CycleProvRequestObj(ProvRequestObj):
-
     ACT_TYPE = "cycle"
     INPUT_TYPE = "Input"
     OUTPUT_TYPE = "Output"
 
-    def __init__(self, cycle_name: str, type_: str, iteration_id, workflow_name: str, wf_exec_id: float,
+    def __init__(self, cycle_name: str, type_: str, iteration_id, workflow_name: Optional[str] = None,
+                 wf_exec_id: Optional = None,
                  values: dict = None, start_time: float = None, end_time: float = None,
-                 stdout: str = None, stderr: str = None, status: str = None, custom_metadata: dict=None):
+                 stdout: str = None, stderr: str = None, status: str = None, custom_metadata: dict = None):
         super().__init__(CycleProvRequestObj.ACT_TYPE, workflow_name, wf_exec_id, custom_metadata)
         assert type_ in [CycleProvRequestObj.INPUT_TYPE, CycleProvRequestObj.OUTPUT_TYPE]
         self.cycle_name = cycle_name

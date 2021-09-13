@@ -1,12 +1,14 @@
 from abc import ABCMeta, abstractmethod
+from typing import Optional
+
 from provlake.utils.constants import Vocabulary
 
 
 class ProvRequestObj:
-
     __metaclass__ = ABCMeta
 
-    def __init__(self, act_type: str, workflow_name: str, wf_exec_id: float, custom_metadata:dict=None):
+    def __init__(self, act_type: str, workflow_name: Optional[str] = None, wf_exec_id: Optional = None,
+                 custom_metadata: dict = None):
         self.act_type = act_type
         self.workflow_name = workflow_name
         self.wf_exec_id = wf_exec_id
