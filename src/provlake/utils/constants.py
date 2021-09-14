@@ -5,6 +5,8 @@ from .prov_utils import convert_timestamp, id_hash
 
 class Routes:
 
+    # This class defines the routes provided by HKProv service's endpoints defined in the OpenAPI contract
+
     SERVER_API_ROOT = "/provenance/api"
     METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
 
@@ -27,7 +29,11 @@ class Routes:
 
     PROJECTS = f"{SERVER_API_ROOT}/projects"
 
-class RoutesTypes:
+    DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
+
+class EndpointsTypes:
+
+    # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
 
     WORKFLOW_EXECUTION_ID = "workflow_execution_id"
     GENERATED_TIME = "generated_time"
@@ -44,14 +50,7 @@ class RoutesTypes:
     ATTRIBUTE_VALUE = "attribute_value"
     ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
     DATA_STORE_ID = "data_store_id"
-
-class RoutesAttributeValueTypes:
-
-    DICT = "DICT"
-    LIST = "LIST"
-    DATA_REFERENCE = "DATA_REFERENCE"
-
-
+    CUSTOM_METADATA = "custom_metadata"
 
 class Vocabulary:
 
@@ -87,6 +86,7 @@ class Vocabulary:
     DATA_REFERENCE_TYPE = "data_reference"
     KG_REFERENCE_TYPE = "kg_reference"
     ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value"
+    CUSTOM_METADA = "custom_metadata"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
     SIMPLE_ATV_TYPE = "simple_attribute_value"
@@ -125,6 +125,10 @@ class Status:
     FINISHED = "FINISHED"
     ERRORED = "ERRORED"
 
+    @staticmethod
+    def get_status():
+        return [Status.GENERATED, Status.RUNNING, Status.FINISHED, Status.ERRORED]
+
 
 class ActType:
 
@@ -139,6 +143,39 @@ class DataTransformationRequestType:
     INPUT = "Input"
     OUTPUT = "Output"
 
+class DataStores:
+    RDBMS ='RDBMS'
+    TRIPLESTORE = 'Triplestore'
+    DOCUMENT_STORE = 'DocumentDBMS'
+    OBJECT_STORE = 'ObjectStore'
+    FILE_SYSTEM = 'FileSystem'
+    VOLUME = 'Volume'
+    GRAPH_DBMS = "GraphDB"
+
+    CLOUD_OBJECT_STORE = "CloudObjectStore"
+    AWSS3 = "AWSS3"
+    NEO4J = "Neo4j"
+    LUSTRE = "Lustre"
+    GPFS = "GPFS"
+    MONGODB = "MongoDB"
+    POSTGRESQL = "PostgreSQL"
+    JENA = "Jena"
+    ALLEGROGRAPH = "AllegroGraph"
+
+    KNOWN_DATA_STORES = {
+        RDBMS: [POSTGRESQL],
+        TRIPLESTORE: [ALLEGROGRAPH],
+        DOCUMENT_STORE: [MONGODB],
+        OBJECT_STORE: [CLOUD_OBJECT_STORE, AWSS3],
+        FILE_SYSTEM: [LUSTRE, GPFS]
+    }
+
+    @staticmethod
+    def get_known_data_stores():
+        data_stores = list()
+        for data_store_type in DataStores.KNOWN_DATA_STORES:
+            data_stores.extend(DataStores.KNOWN_DATA_STORES[data_store_type])
+        return data_stores
 
 class PersistenceStrategy:
 
