@@ -162,6 +162,8 @@ class DataStores:
     JENA = "Jena"
     ALLEGROGRAPH = "AllegroGraph"
 
+    KNOWN_DATA_STORES_TYPES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM]
+
     KNOWN_DATA_STORES = {
         RDBMS: [POSTGRESQL],
         TRIPLESTORE: [ALLEGROGRAPH],
@@ -277,8 +279,8 @@ class StandardNamesAndIds:
         return project_name
 
     @staticmethod
-    def get_data_store_id(data_store_name):
-        return data_store_name
+    def get_data_store_hkg_id(data_store_id):
+        return data_store_id
 
     @staticmethod
     def get_data_store_ctx_id(data_store_id):
