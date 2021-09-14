@@ -1,4 +1,5 @@
 from provlake.utils.constants import StandardNamesAndIds, DataStores
+import uuid
 
 class DataStoreObj:
 
@@ -7,13 +8,13 @@ class DataStoreObj:
             'Data store {data_store} not known.'.format(data_store=type)
         self.id = id
         if not self.id:
-            self.id = name
+            self.id = "ds_"+str(uuid.uuid4())
         self.name = name
         self.type = type
         self.custom_metadata = custom_metadata
 
     def as_dict(self) -> dict:
-        data_store_dict = {
+        return {
             "id": self.id,
             "name": self.name,
             "type": self.type,
