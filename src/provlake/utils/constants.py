@@ -146,7 +146,30 @@ class DataStores:
     VOLUME = 'Volume'
     GRAPH_DBMS = "GraphDB"
 
-    KNOWN_DATA_STORES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM, VOLUME]
+    CLOUD_OBJECT_STORE = "CloudObjectStore"
+    AWSS3 = "AWSS3"
+    NEO4J = "Neo4j"
+    LUSTRE = "Lustre"
+    GPFS = "GPFS"
+    MONGODB = "MongoDB"
+    POSTGRESQL = "PostgreSQL"
+    JENA = "Jena"
+    ALLEGROGRAPH = "AllegroGraph"
+
+    KNOWN_DATA_STORES = {
+        RDBMS: [POSTGRESQL],
+        TRIPLESTORE: [ALLEGROGRAPH],
+        DOCUMENT_STORE: [MONGODB],
+        OBJECT_STORE: [CLOUD_OBJECT_STORE, AWSS3],
+        FILE_SYSTEM: [LUSTRE, GPFS]
+    }
+
+    @staticmethod
+    def get_known_data_stores():
+        data_stores = list()
+        for data_store_type in DataStores.KNOWN_DATA_STORES:
+            data_stores.extend(DataStores.KNOWN_DATA_STORES[data_store_type])
+        return data_stores
 
 class PersistenceStrategy:
 
