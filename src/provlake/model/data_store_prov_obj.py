@@ -2,10 +2,12 @@ from provlake.utils.constants import StandardNamesAndIds, DataStores
 
 class DataStoreObj:
 
-    def __init__(self, id: str, name: str, type: str, custom_metadata: dict=None):
-        if type not in DataStores.get_known_data_stores():
-            raise Exception('Data store {data_store} not known.'.format(data_store=data_store_obj.type))
+    def __init__(self, name: str, type: str, id: str=None, custom_metadata: dict=None):
+        assert type in DataStores.get_known_data_stores(), \
+            'Data store {data_store} not known.'.format(data_store=type)
         self.id = id
+        if not self.id:
+            self.id = name
         self.name = name
         self.type = type
         self.custom_metadata = custom_metadata

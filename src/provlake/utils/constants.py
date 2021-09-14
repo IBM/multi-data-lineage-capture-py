@@ -277,8 +277,8 @@ class StandardNamesAndIds:
         return project_name
 
     @staticmethod
-    def get_data_store_id(data_store_name):
-        return data_store_name
+    def get_data_store_hkg_id(data_store_id):
+        return data_store_id
 
     @staticmethod
     def get_data_store_ctx_id(data_store_id):
