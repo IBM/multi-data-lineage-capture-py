@@ -29,6 +29,8 @@ class Routes:
 
     PROJECTS = f"{SERVER_API_ROOT}/projects"
 
+    DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
+
 class EndpointsTypes:
 
     # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
@@ -122,6 +124,10 @@ class Status:
     RUNNING = "RUNNING"
     FINISHED = "FINISHED"
     ERRORED = "ERRORED"
+
+    @staticmethod
+    def get_status():
+        return [Status.GENERATED, Status.RUNNING, Status.FINISHED, Status.ERRORED]
 
 
 class ActType:
