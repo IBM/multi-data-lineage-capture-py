@@ -134,6 +134,9 @@ class ProvTask(ActivityCapture):
             return None
         try:
             # self.prov_obj.values = self._input_args
+            # ensuring the running request does not repeat the input_args
+            self.prov_obj.values = None
+
             self.prov_obj.type_ = DataTransformationRequestType.INPUT
             self.prov_obj.start_time = start_time if start_time is not None else time()
             self.prov_obj.status = Status.RUNNING
