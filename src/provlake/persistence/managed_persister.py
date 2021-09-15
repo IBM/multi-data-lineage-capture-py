@@ -75,7 +75,8 @@ class ManagedPersister(Persister):
                 sleep(0.1)
         # Persist remaining tasks synchronously
         self._flush(all_and_wait=True)
-        self.offline_prov_log.removeHandler(self._log_handler)
+        if self.should_send_to_file:
+            self.offline_prov_log.removeHandler(self._log_handler)
         if self.session:
             self.session.close()
 
