@@ -17,6 +17,9 @@ class Persister:
         return self.log_file_path
 
     def close(self):
-        pass
+        # harakiri
+        from provlake import ProvLake
+        del ProvLake._persister_singleton_instance
+        ProvLake._persister_singleton_instance = None
 
 

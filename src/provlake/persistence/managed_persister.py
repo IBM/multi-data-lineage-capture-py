@@ -37,19 +37,31 @@ class ManagedPersister(Persister):
         self.should_send_to_file = should_send_to_file
 
         self._session = None
+        self._offline_prov_log = None
+
+
 
         if self.should_send_to_file:
             if not os.path.exists(log_dir):
                 os.makedirs(os.path.join(os.getcwd(), log_dir))
 
-            #self.log_file_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name,
-            #                                                                   wf_start_time)
             handler = logging.FileHandler(self.log_file_path, mode='a+', delay=False)
-            self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
-            self.offline_prov_log.setLevel("DEBUG")
             self._log_handler = handler
-            self.offline_prov_log.addHandler(self._log_handler)
-            # should_send_to_file = True
+
+    def _set_log_handler(self):
+        self._offline_prov_log = logging.getLogger("OFFLINE_PROV")
+        self._offline_prov_log.setLevel("DEBUG")
+        self._offline_prov_log.addHandler(self._log_handler)
+
+    @property
+    def offline_prov_log(self):
+        if self._offline_prov_log is None:
+            self._set_log_handler()
+        return self._offline_prov_log
+
+    def reset_local_log(self):
+        self.offline_prov_log.removeHandler(self._log_handler)
+        self._offline_prov_log = None
 
     @property
     def session(self):
@@ -83,9 +95,10 @@ class ManagedPersister(Persister):
         # Persist remaining tasks synchronously
         self._flush(all_and_wait=True)
         if self.should_send_to_file:
-            self.offline_prov_log.removeHandler(self._log_handler)
+            self.reset_local_log()
         if self.session:
             self.close_session()
+        super(ManagedPersister, self).close()
 
     def _flush(self, all_and_wait: bool = False):
         if len(self.requests_queue) > 0:

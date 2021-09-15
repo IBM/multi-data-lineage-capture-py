@@ -24,3 +24,7 @@ class UnmanagedPersister(Persister):
         except Exception as e:
             logger.error("Could not save prov logs in " + self.log_file_path + "\n" + str(e))
             pass
+
+    def __del__(self):
+        logging.warning('Calling the destructor')
+
