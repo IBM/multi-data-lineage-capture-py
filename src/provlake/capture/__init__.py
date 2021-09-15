@@ -108,7 +108,7 @@ class ProvTask(ActivityCapture):
             input_args = dict()
 
         self.stored_output = False
-        self.input_args = input_args
+        self._input_args = input_args
         if not task_id:
             task_id = self.generated_time
 
@@ -123,7 +123,8 @@ class ProvTask(ActivityCapture):
                                            person_id=person_id,
                                            task_id=task_id,
                                            custom_metadata=self.get_custom_metadata(),
-                                           attribute_associations=attribute_associations
+                                           attribute_associations=attribute_associations,
+                                           values=self._input_args
                                            )
 
         self._prov_persister.add_request(self.prov_obj)
@@ -132,7 +133,7 @@ class ProvTask(ActivityCapture):
         if self._prov_persister is None:
             return None
         try:
-            self.prov_obj.values = self.input_args
+            # self.prov_obj.values = self._input_args
             self.prov_obj.type_ = DataTransformationRequestType.INPUT
             self.prov_obj.start_time = start_time if start_time is not None else time()
             self.prov_obj.status = Status.RUNNING

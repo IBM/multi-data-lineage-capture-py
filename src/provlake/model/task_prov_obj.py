@@ -1,7 +1,7 @@
 from typing import Optional
 
 from provlake.model.activity_prov_obj import ProvRequestObj
-from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequestType
+from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequestType, Status
 
 
 class TaskProvRequestObj(ProvRequestObj):
@@ -17,6 +17,8 @@ class TaskProvRequestObj(ProvRequestObj):
         assert type_ in [DataTransformationRequestType.INPUT,
                          DataTransformationRequestType.OUTPUT,
                          DataTransformationRequestType.GENERATE]
+        assert isinstance(status, str)
+        assert status in Status.get_status()
         self.dt_name = dt_name
         self.person_id = person_id
         self.type_ = type_
