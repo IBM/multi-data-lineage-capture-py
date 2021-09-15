@@ -8,7 +8,7 @@ class DataStoreObj:
             'Data store {data_store} not known.'.format(data_store=type)
         self.id = id
         if not self.id:
-            self.id = "ds_"+str(uuid.uuid4())
+            self.id = "ds_"+str(uuid.uuid4()).replace('-', '_')
         self.name = name
         self.type = type
         self.custom_metadata = custom_metadata
