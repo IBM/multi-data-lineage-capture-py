@@ -36,10 +36,7 @@ class ManagedPersister(Persister):
         self.should_send_to_service = should_send_to_service
         self.should_send_to_file = should_send_to_file
 
-        self.session = None
-        if self.should_send_to_service:
-            logger.debug("You are using the Service URL: " + service_url)
-            self.session = FuturesSession()
+        self._session = None
 
         if self.should_send_to_file:
             if not os.path.exists(log_dir):
@@ -53,6 +50,16 @@ class ManagedPersister(Persister):
             self._log_handler = handler
             self.offline_prov_log.addHandler(self._log_handler)
             # should_send_to_file = True
+
+    @property
+    def session(self):
+        if self.should_send_to_service and self._session is None:
+            self._session = FuturesSession()
+        return self._session
+
+    def close_session(self):
+        self.session.close()
+        self._session = None
 
     def add_request(self, persistence_request: ProvRequestObj):
         try:
@@ -78,7 +85,7 @@ class ManagedPersister(Persister):
         if self.should_send_to_file:
             self.offline_prov_log.removeHandler(self._log_handler)
         if self.session:
-            self.session.close()
+            self.close_session()
 
     def _flush(self, all_and_wait: bool = False):
         if len(self.requests_queue) > 0:
