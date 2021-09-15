@@ -21,10 +21,11 @@ logger = logging.getLogger('PROV')
 
 class ManagedPersister(Persister):
 
-    def __init__(self, workflow_name: str, wf_start_time: float, service_url: str, wf_exec_id=None, context: str = None,
+    def __init__(self, log_file_path: str, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
-                 log_dir:str='.', should_send_to_file: bool = False, should_send_to_service: bool = True):
-        super().__init__(workflow_name, wf_start_time, wf_exec_id)
+                 log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True,
+                 ):
+        super().__init__(log_file_path)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
         self.prospective_url = urljoin(service_url, "prospective-provenance")
         self.context = context
@@ -40,21 +41,18 @@ class ManagedPersister(Persister):
             logger.debug("You are using the Service URL: " + service_url)
             self.session = FuturesSession()
 
-        if self.should_send_to_file :
+        if self.should_send_to_file:
             if not os.path.exists(log_dir):
                 os.makedirs(os.path.join(os.getcwd(), log_dir))
 
-            self.log_file_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name,
-                                                                               wf_start_time)
+            #self.log_file_path = StandardNamesAndIds.get_prov_log_file_path(log_dir, workflow_name,
+            #                                                                   wf_start_time)
             handler = logging.FileHandler(self.log_file_path, mode='a+', delay=False)
             self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
-            self.offline_prov_log = logging.getLogger("OFFLINE_PROV")
             self.offline_prov_log.setLevel("DEBUG")
-            self.offline_prov_log.addHandler(handler)
+            self._log_handler = handler
+            self.offline_prov_log.addHandler(self._log_handler)
             # should_send_to_file = True
-
-    def get_file_path(self):
-        return self.log_file_path
 
     def add_request(self, persistence_request: ProvRequestObj):
         try:
@@ -64,18 +62,12 @@ class ManagedPersister(Persister):
             self.requests_queue.append(request_data)
             if len(self.requests_queue) >= self.bag_size:
                 self._flush()
-            # if `configuration` is present this object should be persisted synchronously
-            # if "configuration" in prov_obj:
-            #     self.__flush__(True)
         except Exception:
             logger.error("[Prov] Unexpected exception")
             traceback.print_exc()
             pass
 
-    def get_file_path(self):
-        return self.log_file_path
-
-    def _close(self):
+    def close(self):
         if self.session:
             logger.info("Waiting to get response from all submitted provenance tasks...")
             while not self.session.executor._work_queue.empty():
@@ -83,27 +75,28 @@ class ManagedPersister(Persister):
                 sleep(0.1)
         # Persist remaining tasks synchronously
         self._flush(all_and_wait=True)
+        self.offline_prov_log.removeHandler(self._log_handler)
         if self.session:
             self.session.close()
 
     def _flush(self, all_and_wait: bool = False):
-            if len(self.requests_queue) > 0:
-                if all_and_wait:
-                    logger.debug("Going to flush everything. Flushing " + str(len(self.requests_queue)))
-                    if self.should_send_to_file:
-                        offline_prov_log.debug(json.dumps(self.requests_queue))
-                    if self.should_send_to_service:
-                        self._send_to_service(self.requests_queue)
-                    self.requests_queue = list()
-                else:
-                    to_flush = self.requests_queue[:self.bag_size]
-                    del self.requests_queue[:self.bag_size]
-                    logger.debug("Going to flush a part. Flushing " + str(len(to_flush)) + " out of " +
-                                str(len(self.requests_queue)))
-                    if self.should_send_to_file:
-                        self.offline_prov_log.debug(json.dumps(to_flush))
-                    if self.should_send_to_service:
-                        self._send_to_service(to_flush)
+        if len(self.requests_queue) > 0:
+            if all_and_wait:
+                logger.debug("Going to flush everything. Flushing " + str(len(self.requests_queue)))
+                if self.should_send_to_file:
+                    self.offline_prov_log.debug(json.dumps(self.requests_queue))
+                if self.should_send_to_service:
+                    self._send_to_service(self.requests_queue)
+                self.requests_queue = list()
+            else:
+                to_flush = self.requests_queue[:self.bag_size]
+                del self.requests_queue[:self.bag_size]
+                logger.debug("Going to flush a part. Flushing " + str(len(to_flush)) + " out of " +
+                            str(len(self.requests_queue)))
+                if self.should_send_to_file:
+                    self.offline_prov_log.debug(json.dumps(to_flush))
+                if self.should_send_to_service:
+                    self._send_to_service(to_flush)
 
     def _send_to_service(self, to_flush: List[dict]):
         params = {"with_validation": str(self.with_validation), "db_name": self.db_name}
@@ -130,7 +123,7 @@ class ManagedPersister(Persister):
     def persist_prospective(self, json_data: dict):
         try:
             if self.should_send_to_file:
-                offline_prov_log.debug(json.dumps(self.requests_queue))
+                self.offline_prov_log.debug(json.dumps(self.requests_queue))
             if self.should_send_to_service:
                 logger.debug("[Prov-Persistence][Prospective]" + json.dumps(json_data))
                 try:
