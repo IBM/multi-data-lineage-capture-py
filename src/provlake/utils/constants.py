@@ -159,7 +159,7 @@ class DataStores:
     OBJECT_STORE = 'ObjectStore'
     FILE_SYSTEM = 'FileSystem'
     VOLUME = 'Volume'
-    GRAPH_DBMS = "GraphDB"
+    GRAPH_DBMS = "GraphDBMS"
 
     CLOUD_OBJECT_STORE = "CloudObjectStore"
     AWSS3 = "AWSS3"
@@ -171,7 +171,7 @@ class DataStores:
     JENA = "Jena"
     ALLEGROGRAPH = "AllegroGraph"
 
-    KNOWN_DATA_STORES_TYPES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM]
+    KNOWN_DATA_STORES_TYPES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM, GRAPH_DBMS]
 
     KNOWN_DATA_STORES = {
         RDBMS: [POSTGRESQL],
