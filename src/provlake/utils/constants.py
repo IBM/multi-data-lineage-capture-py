@@ -96,7 +96,8 @@ class Vocabulary:
     SIMPLE_DICT_TYPE = "simple_dict"
     DATASET_TYPE = "dataset"
 
-    GLOBAL_WORKFLOW_EXECUTION = "global"
+    GLOBAL_WORKFLOW_EXECUTION_ID = "global"
+    GLOBAL_WORKFLOW_EXECUTION_NAME = "global_wfe"
 
 
 class DataStoreConfiguration:
