@@ -22,6 +22,8 @@ class Routes:
 
     WORKFLOW_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions"
 
+    GLOBAL_WORKFLOW_EXECUTION = f"{SERVER_API_ROOT}/global-workflow-execution"
+
     WORKFLOW_EXECUTIONS_BY_WORKFLOW_EXECUTION = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>"
 
     WORKFLOW_EXECUTIONS_SUMMARY_BY_WORKFLOW_EXECUTION = \
@@ -93,6 +95,8 @@ class Vocabulary:
     SIMPLE_LIST_TYPE = "simple_list"
     SIMPLE_DICT_TYPE = "simple_dict"
     DATASET_TYPE = "dataset"
+
+    GLOBAL_WORKFLOW_EXECUTION = "global"
 
 
 class DataStoreConfiguration:
