@@ -8,8 +8,15 @@ class Routes:
     # This class defines the routes provided by HKProv service's endpoints defined in the OpenAPI contract
 
     SERVER_API_ROOT = "/provenance/api"
-    METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
 
+    # PROSPECTIVE ROUTES
+    METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
+    PROJECTS = f"{SERVER_API_ROOT}/projects"
+    DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
+    WORKFLOW = f"{SERVER_API_ROOT}/workflows"
+    DATA_TRANSFORMATION = f"{SERVER_API_ROOT}/data-transformations"
+
+    # RETROSPECTIVE ROUTES
     CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
 
     DATA_TRANSFORMATION_EXECUTIONS_BY_WORKFLOW_EXECUTION = \
@@ -29,9 +36,6 @@ class Routes:
     WORKFLOW_EXECUTIONS_SUMMARY_BY_WORKFLOW_EXECUTION = \
         f"{SERVER_API_ROOT}/workflow-execution-summaries/<path:workflow_execution_id>"
 
-    PROJECTS = f"{SERVER_API_ROOT}/projects"
-
-    DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
 
 class EndpointsTypes:
 
