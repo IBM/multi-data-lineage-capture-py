@@ -13,7 +13,7 @@ class Routes:
     METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
     PROJECTS = f"{SERVER_API_ROOT}/projects"
     DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
-    WORKFLOW = f"{SERVER_API_ROOT}/workflows"
+    WORKFLOWS = f"{SERVER_API_ROOT}/workflows"
     DATA_TRANSFORMATION = f"{SERVER_API_ROOT}/data-transformations"
 
     # RETROSPECTIVE ROUTES
@@ -41,6 +41,7 @@ class EndpointsTypes:
 
     # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
 
+    WORKFLOW_ID = "workflow_id"
     WORKFLOW_EXECUTION_ID = "workflow_execution_id"
     GENERATED_TIME = "generated_time"
     START_TIME = "start_time"
@@ -59,7 +60,7 @@ class EndpointsTypes:
     CUSTOM_METADATA = "custom_metadata"
 
 class Vocabulary:
-
+    ID = "ID"
     START_TIME = "startTime"
     END_TIME = "endTime"
     GENERATED_TIME = "generatedTime"
