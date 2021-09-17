@@ -102,7 +102,7 @@ class Vocabulary:
     DATASET_TYPE = "dataset"
 
     GLOBAL_WORKFLOW_EXECUTION_ID = "global"
-    GLOBAL_WORKFLOW_EXECUTION_NAME = "global_wfe"
+    GLOBAL_WORKFLOW_EXECUTION_NAME = "global_workflow"
 
 
 class DataStoreConfiguration:
