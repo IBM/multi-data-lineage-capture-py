@@ -14,7 +14,7 @@ class Routes:
     PROJECTS = f"{SERVER_API_ROOT}/projects"
     DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
     WORKFLOWS = f"{SERVER_API_ROOT}/workflows"
-    DATA_TRANSFORMATION = f"{SERVER_API_ROOT}/data-transformations"
+    DATA_TRANSFORMATIONS = f"{SERVER_API_ROOT}/data-transformations"
 
     # RETROSPECTIVE ROUTES
     CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
