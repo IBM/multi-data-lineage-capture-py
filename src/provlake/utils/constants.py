@@ -19,9 +19,6 @@ class Routes:
     # RETROSPECTIVE ROUTES
     CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
 
-    DATA_TRANSFORMATION_EXECUTIONS_BY_WORKFLOW_EXECUTION = \
-        f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/data-transformation-executions"
-
     DATA_TRANSFORMATION_EXECUTIONS = f"{SERVER_API_ROOT}/data-transformation-executions"
 
     DATA_TRANSFORMATION_EXECUTIONS_BY_PERSON = \
@@ -41,12 +38,12 @@ class EndpointsTypes:
 
     # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
 
-    WORKFLOW_ID = "workflow_id"
     WORKFLOW_EXECUTION_ID = "workflow_execution_id"
     GENERATED_TIME = "generated_time"
     START_TIME = "start_time"
     END_TIME = "end_time"
     WORKFLOW_NAME = "workflow_name"
+    DATA_TRANSFORMATIONS_OF_WORKFLOW = "data_transformations"
     STATUS = "status"
     WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
     DATA_TRANSFORMATION_NAME = "data_transformation_name"
@@ -88,6 +85,8 @@ class Vocabulary:
     DATASET_ID = "dataset_id"
     DATASET_SCHEMA_ID = "dataset_schema_id"
     DATA_STORE_ID = "data_store_id"
+
+    WORKFLOW_ID = "workflow_id"
 
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
