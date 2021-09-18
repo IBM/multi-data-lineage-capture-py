@@ -46,6 +46,7 @@ class EndpointsTypes:
     DATA_TRANSFORMATIONS_OF_WORKFLOW = "data_transformations"
     STATUS = "status"
     WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
+    DATA_TRANSFORMATION_ID = "data_transformation_id"
     DATA_TRANSFORMATION_NAME = "data_transformation_name"
     DATA_TRANSFORMATION_EXECUTION_ID = "data_transformation_execution_id"
     INPUT = "input"
@@ -87,6 +88,7 @@ class Vocabulary:
     DATA_STORE_ID = "data_store_id"
 
     WORKFLOW_ID = "workflow_id"
+    DATA_TRANSFORMATION_ID = "data_transformation_id"
 
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
