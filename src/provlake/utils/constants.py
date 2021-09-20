@@ -57,6 +57,8 @@ class EndpointsTypes:
     DATA_STORE_ID = "data_store_id"
     CUSTOM_METADATA = "custom_metadata"
     TASK_ID = "task_id"
+    PERSON_ID = "person_id"
+    DATA_TRANSFORMATION_EXECUTION_HKG_ID = "data_transformation_execution_hkg_ids"
 
 class Vocabulary:
     ID = "ID"
