@@ -42,7 +42,7 @@ class ProvWorkflow(ActivityCapture):
                 wf_exec_id=self.wf_exec_id,
                 workflow_name=self.workflow_name,
                 start_time=self.wf_start_time,
-                status=Status.RUNNING,
+                #status=Status.RUNNING,
                 custom_metadata=self.get_custom_metadata()
             )
             self._prov_persister.add_request(prov_obj)
@@ -116,7 +116,7 @@ class ProvTask(ActivityCapture):
                                            type_=DataTransformationRequestType.GENERATE,
                                            wf_exec_id=None if prov_workflow is None else prov_workflow.wf_exec_id,
                                            workflow_name=None if prov_workflow is None else prov_workflow.workflow_name,
-                                           status=Status.GENERATED,
+                                           #status=Status.GENERATED,
                                            generated_time=self.generated_time,
                                            parent_cycle_name=parent_cycle_name,
                                            parent_cycle_iteration=parent_cycle_iteration,
@@ -139,7 +139,7 @@ class ProvTask(ActivityCapture):
 
             self.prov_obj.type_ = DataTransformationRequestType.INPUT
             self.prov_obj.start_time = start_time if start_time is not None else time()
-            self.prov_obj.status = Status.RUNNING
+            #self.prov_obj.status = Status.RUNNING
             self._prov_persister.add_request(self.prov_obj)
             return self.prov_obj
         except Exception as e:

@@ -17,8 +17,9 @@ class TaskProvRequestObj(ProvRequestObj):
         assert type_ in [DataTransformationRequestType.INPUT,
                          DataTransformationRequestType.OUTPUT,
                          DataTransformationRequestType.GENERATE]
-        assert isinstance(status, str)
-        assert status in Status.get_status()
+        if status:
+            assert isinstance(status, str)
+            assert status in Status.get_status()
         self.dt_name = dt_name
         self.person_id = person_id
         self.type_ = type_
