@@ -3,7 +3,7 @@ from provlake.capture.activity_capture import ActivityCapture
 from provlake.model.workflow_prov_obj import WorkflowProvRequestObj
 from provlake.model.task_prov_obj import TaskProvRequestObj
 from provlake.model.cycle_prov_obj import CycleProvRequestObj
-from provlake.utils.constants import Status, DataTransformationRequestType
+from provlake.utils.constants import Status, DataTransformationRequestType, StandardNamesAndIds
 import traceback
 import logging
 from typing import Optional, Dict
@@ -82,6 +82,9 @@ class ProvWorkflow(ActivityCapture):
             logger.error("Error storing provenance for end workflow")
             return None
 
+    def get_workflow_execution_id(self):
+        return StandardNamesAndIds.get_wfe_id(self.workflow_name, self.wf_exec_id)
+
     def __enter__(self):
         self.begin()
         return self
@@ -93,7 +96,6 @@ class ProvWorkflow(ActivityCapture):
 
 
 class ProvTask(ActivityCapture):
-
     def __init__(self, prov_persister: Persister, data_transformation_name: str,
                  prov_workflow: Optional[ProvWorkflow] = None,
                  input_args: Optional[Dict] = None, parent_cycle_name: str = None, parent_cycle_iteration=None,
@@ -109,25 +111,29 @@ class ProvTask(ActivityCapture):
 
         self.stored_output = False
         self._input_args = input_args
-        if not task_id:
-            task_id = self.generated_time
+        self.task_id = task_id
+        if self.task_id is None:
+            self.task_id = self.generated_time
 
         self.prov_obj = TaskProvRequestObj(dt_name=data_transformation_name,
                                            type_=DataTransformationRequestType.GENERATE,
                                            wf_exec_id=None if prov_workflow is None else prov_workflow.wf_exec_id,
                                            workflow_name=None if prov_workflow is None else prov_workflow.workflow_name,
-                                           #status=Status.GENERATED,
                                            generated_time=self.generated_time,
                                            parent_cycle_name=parent_cycle_name,
                                            parent_cycle_iteration=parent_cycle_iteration,
                                            person_id=person_id,
-                                           task_id=task_id,
+                                           task_id=self.task_id,
                                            custom_metadata=self.get_custom_metadata(),
                                            attribute_associations=attribute_associations,
                                            values=self._input_args
                                            )
 
         self._prov_persister.add_request(self.prov_obj)
+
+    def get_data_transformation_execution_id(self):
+        # TODO refactor
+        return StandardNamesAndIds.get_dte_id(self.prov_obj.wf_exec_id, self.prov_obj.dt_name, self.prov_obj.as_dict()["prov_obj"]["task"])
 
     def begin(self, start_time: float = None) -> TaskProvRequestObj:
         if self._prov_persister is None:
