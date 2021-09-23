@@ -90,8 +90,10 @@ class Vocabulary:
     DATASET_SCHEMA_ID = "dataset_schema_id"
     DATA_STORE_ID = "data_store_id"
 
-    WORKFLOW_ID = "workflow_id"
     DATA_TRANSFORMATION_ID = "data_transformation_id"
+    DATA_TRANSFORMATION_NAME = "data_transformation_name"
+    INPUT = "input"
+    OUTPUT = "output"
 
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
