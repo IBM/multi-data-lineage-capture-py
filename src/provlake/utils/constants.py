@@ -44,6 +44,8 @@ class EndpointsTypes:
     END_TIME = "end_time"
     WORKFLOW_NAME = "workflow_name"
     DATA_TRANSFORMATIONS_OF_WORKFLOW = "data_transformations"
+    DATA_TRANSFORMATIONS_EXECUTIONS_OF_WORKFLOW_EXECUTION = "data_transformation_executions"
+    NUMBER_OF_DATA_TRANSFORMATION_EXECUTIONS = "number_of_data_transformation_executions"
     STATUS = "status"
     WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
     DATA_TRANSFORMATION_ID = "data_transformation_id"
