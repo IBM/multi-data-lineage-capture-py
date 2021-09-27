@@ -13,6 +13,7 @@ class Routes:
     METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
     PROJECTS = f"{SERVER_API_ROOT}/projects"
     DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
+    QUERY_MANAGEMENT = f"{SERVER_API_ROOT}/stored-queries"
     WORKFLOWS = f"{SERVER_API_ROOT}/workflows"
     DATA_TRANSFORMATIONS = f"{SERVER_API_ROOT}/data-transformations"
 
