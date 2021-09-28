@@ -17,12 +17,17 @@ class QueryObj:
         self.columns = columns
 
     def as_dict(self) -> dict:
-        return {
+        ret = {
             "id": self.id,
             "query_text": self.query_text,
-            "description": self.description,
-            "label": self.label,
-            "columns": self.columns,
             "mime_type": self.mime_type,
-            "parameters": self.parameters
         }
+        if self.label:
+            ret["label"] = self.label
+        if self.description:
+            ret["description"] = self.description
+        if self.columns:
+            ret["columns"] = self.columns
+        if self.parameters:
+            ret["parameters"] = self.parameters
+        return ret

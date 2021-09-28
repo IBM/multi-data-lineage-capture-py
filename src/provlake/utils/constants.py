@@ -45,14 +45,16 @@ class EndpointsTypes:
     END_TIME = "end_time"
     WORKFLOW_NAME = "workflow_name"
     DATA_TRANSFORMATIONS_OF_WORKFLOW = "data_transformations"
+    DATA_TRANSFORMATIONS_EXECUTIONS_OF_WORKFLOW_EXECUTION = "data_transformation_executions"
+    NUMBER_OF_DATA_TRANSFORMATION_EXECUTIONS = "number_of_data_transformation_executions"
     STATUS = "status"
     WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
-    DATA_TRANSFORMATION_ID = "data_transformation_id"
     DATA_TRANSFORMATION_NAME = "data_transformation_name"
     DATA_TRANSFORMATION_EXECUTION_ID = "data_transformation_execution_id"
     INPUT = "input"
     OUTPUT = "output"
-    ATTRIBUTE_ID = "attribute_id"
+    ATTRIBUTE_NAME = "attribute_name"
+    ATTRIBUTE_VALUE_ID = "attribute_value_id"
     ATTRIBUTE_VALUE = "attribute_value"
     ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
     DATA_STORE_ID = "data_store_id"
@@ -91,8 +93,10 @@ class Vocabulary:
     DATASET_SCHEMA_ID = "dataset_schema_id"
     DATA_STORE_ID = "data_store_id"
 
-    WORKFLOW_ID = "workflow_id"
     DATA_TRANSFORMATION_ID = "data_transformation_id"
+    DATA_TRANSFORMATION_NAME = "data_transformation_name"
+    INPUT = "input"
+    OUTPUT = "output"
 
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
@@ -107,7 +111,7 @@ class Vocabulary:
     DATASET_TYPE = "dataset"
 
     GLOBAL_WORKFLOW_EXECUTION_ID = "global"
-    GLOBAL_WORKFLOW_EXECUTION_NAME = "global_workflow"
+    GLOBAL_WORKFLOW_NAME = "global_workflow"
 
 
 class DataStoreConfiguration:
