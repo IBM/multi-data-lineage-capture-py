@@ -99,6 +99,7 @@ class Vocabulary:
     OUTPUT = "output"
 
     CHECK_RESULT = "check_result"
+    OPERATION_RESULT = "result"
     MESSAGE = "message"
 
     # Types:
