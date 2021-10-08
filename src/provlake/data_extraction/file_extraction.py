@@ -66,7 +66,7 @@ class CSVFileExtraction(FileExtraction):
 
         in_arg = {"input_data": get_dict(args)}
         with ProvTask(self.persister, self._extraction_name, self.prov_wf, in_arg,
-                      custom_metadata={"type": "CSVFileExtraction"}) as provtask:
+                      custom_metadata={"type": "CSVFileExtraction", "dataset_name": self._dataset_name}) as provtask:
             args_list = self._extraction_function(self._file_path_or_buffer, **self._extraction_function_kwargs)
             provtask.end(args_list)
             self.generated_time = provtask.generated_time

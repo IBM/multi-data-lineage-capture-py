@@ -98,6 +98,9 @@ class Vocabulary:
     INPUT = "input"
     OUTPUT = "output"
 
+    CHECK_RESULT = "check_result"
+    MESSAGE = "message"
+
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
     KG_REFERENCE_TYPE = "kg_reference"
