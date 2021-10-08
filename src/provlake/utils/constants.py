@@ -261,6 +261,7 @@ class StandardNamesAndIds:
         # TODO refactor: wfe_id should be optional
         if wfe_id is None:
             wfe_id = StandardNamesAndIds.get_wfe_id(Vocabulary.GLOBAL_WORKFLOW_EXECUTION_ID)
+        wfe_id = str(wfe_id)
         task_id = prov_task["id"]
         # TODO better wfe_id + dte_name + timestamp
         if Vocabulary.GENERATED_TIME in prov_task and \
