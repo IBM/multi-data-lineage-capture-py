@@ -51,29 +51,22 @@ class ProvRequestObj:
             result[Vocabulary.MESSAGE] = f"{status} status passed"
             result[Vocabulary.CHECK_RESULT] = True
             return result
-        if generated_time:
-            if start_time or end_time:
-                result[Vocabulary.MESSAGE] = \
-                    f"If generated time is filled , start and end times should be not filled"
-            # status is optional, but if status comes, it has to be GENERATED
-            if status and status != Status.GENERATED:
-                result[Vocabulary.MESSAGE] = \
-                    f"If generated time is filled and status is filled then status has to be {status.GENERATED}"
-                return result
-            result[Vocabulary.MESSAGE] = f"{Status.GENERATED} status passed"
-            result[Vocabulary.CHECK_RESULT] = True
-            return result
-        if start_time:
-            if end_time:
-                result[Vocabulary.MESSAGE] = \
-                    f"If start time is filled, end time cannot be filled"
-                return result
+        if start_time: # and not end_time
             # status and generated_time are optional, but if status comes, it has to be RUNNING
             if status and status != Status.RUNNING:
                 result[Vocabulary.MESSAGE] = \
                     f"If start time is filled and status is filled then status has to be {Status.RUNNING}"
                 return result
             result[Vocabulary.MESSAGE] = f"{Status.RUNNING} status passed"
+            result[Vocabulary.CHECK_RESULT] = True
+            return result
+        if generated_time: # and not start_time and end_time
+            # status is optional, but if status comes, it has to be GENERATED
+            if status and status != Status.GENERATED:
+                result[Vocabulary.MESSAGE] = \
+                    f"If generated time is filled and status is filled then status has to be {Status.GENERATED}"
+                return result
+            result[Vocabulary.MESSAGE] = f"{Status.GENERATED} status passed"
             result[Vocabulary.CHECK_RESULT] = True
             return result
         return result
