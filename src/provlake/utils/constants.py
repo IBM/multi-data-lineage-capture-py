@@ -97,6 +97,7 @@ class Vocabulary:
     DATA_TRANSFORMATION_NAME = "data_transformation_name"
     INPUT = "input"
     OUTPUT = "output"
+    ATTRIBUTE_VALUE_DATA_TYPE = "datatype"
 
     CHECK_RESULT = "check_result"
     OPERATION_RESULT = "result"
