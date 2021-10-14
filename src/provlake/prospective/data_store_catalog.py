@@ -1,6 +1,7 @@
 from provlake.model.data_store_prov_obj import DataStoreObj
 from provlake.utils.constants import Routes
 import requests
+import urllib.parse
 
 
 class DataStoreCatalog:
@@ -21,4 +22,13 @@ class DataStoreCatalog:
         url = f"{self.service_url}{Routes.DATA_STORES}"
         response = requests.get(url, headers=self.headers)
         assert 200 == response.status_code, "error in calling the server"
+        return response.json()
+
+    def get_data_store(self, id_: str):
+        url = f"{self.service_url}{Routes.DATA_STORES}/{urllib.parse.quote(id_)}"
+        response = requests.get(url, headers=self.headers)
+        if not response.ok:
+            error_msg = f'Error: [code: {response.status_code}] {response.content}'
+            print(error_msg)
+            raise AssertionError(error_msg)
         return response.json()
