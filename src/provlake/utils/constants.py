@@ -197,12 +197,28 @@ class DataStores:
         FILE_SYSTEM: [LUSTRE, GPFS]
     }
 
+    URL = "url"
+    HOST_ADDRESS = "host_address"
+    BUCKET = "bucket"
+
+    DATA_STORE_IDENTIFIERS = {
+        OBJECT_STORE: [URL, BUCKET],
+        RDBMS: [HOST_ADDRESS]
+    }
+
     @staticmethod
     def get_known_data_stores():
         data_stores = list()
         for data_store_type in DataStores.KNOWN_DATA_STORES:
             data_stores.extend(DataStores.KNOWN_DATA_STORES[data_store_type])
         return data_stores
+
+    @staticmethod
+    def get_data_store_super_type(data_store):
+        for data_store_super_type in DataStores.KNOWN_DATA_STORES.keys():
+            if data_store in DataStores.KNOWN_DATA_STORES[data_store_super_type]:
+                return data_store_super_type
+        return None
 
 class PersistenceStrategy:
 
