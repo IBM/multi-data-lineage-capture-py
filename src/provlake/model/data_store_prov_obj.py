@@ -11,7 +11,8 @@ class DataStoreObj:
             self.id = "ds_"+str(uuid.uuid4()).replace('-', '_')
         self.name = name
         self.type = type
-        self.custom_metadata = custom_metadata
+        if custom_metadata:
+            self.custom_metadata = custom_metadata
         super_type = DataStores.get_data_store_super_type(type)
         if super_type in DataStores.DATA_STORE_IDENTIFIERS.keys():
             # assert len(kwargs.keys()) == len(DataStores.DATA_STORE_IDENTIFIERS[super_type]), \

@@ -10,29 +10,29 @@ class Routes:
     SERVER_API_ROOT = "/provenance/api"
 
     # PROSPECTIVE ROUTES
-    METAMODEL_LOAD = f"{SERVER_API_ROOT}/metamodel/load"
+    METAMODEL_LOAD = "/metamodel/load"
     PROJECTS = f"{SERVER_API_ROOT}/projects"
-    DATA_STORES = f"{SERVER_API_ROOT}/data-stores"
+    DATA_STORES = "/data-stores"
     QUERY_MANAGEMENT = f"{SERVER_API_ROOT}/stored-queries"
-    WORKFLOWS = f"{SERVER_API_ROOT}/workflows"
-    DATA_TRANSFORMATIONS = f"{SERVER_API_ROOT}/data-transformations"
+    WORKFLOWS = "/workflows"
+    DATA_TRANSFORMATIONS = "/data-transformations"
 
     # RETROSPECTIVE ROUTES
     CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
 
-    DATA_TRANSFORMATION_EXECUTIONS = f"{SERVER_API_ROOT}/data-transformation-executions"
+    DATA_TRANSFORMATION_EXECUTIONS = "/data-transformation-executions"
 
     DATA_TRANSFORMATION_EXECUTIONS_BY_PERSON = \
-        f"{SERVER_API_ROOT}/persons/<path:person_id>/data-transformation-executions"
+        "/persons/<path:person_id>/data-transformation-executions"
 
-    WORKFLOW_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions"
+    WORKFLOW_EXECUTIONS = "/workflow-executions"
 
-    GLOBAL_WORKFLOW_EXECUTION = f"{SERVER_API_ROOT}/global-workflow-execution"
+    GLOBAL_WORKFLOW_EXECUTION = "/global-workflow-execution"
 
-    WORKFLOW_EXECUTIONS_BY_WORKFLOW_EXECUTION = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>"
+    WORKFLOW_EXECUTIONS_BY_WORKFLOW_EXECUTION = f"{WORKFLOW_EXECUTIONS}/<path:workflow_execution_id>"
 
     WORKFLOW_EXECUTIONS_SUMMARY_BY_WORKFLOW_EXECUTION = \
-        f"{SERVER_API_ROOT}/workflow-execution-summaries/<path:workflow_execution_id>"
+        "/workflow-execution-summaries/<path:workflow_execution_id>"
 
 
 class EndpointsTypes:
