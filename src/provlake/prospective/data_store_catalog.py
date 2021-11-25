@@ -11,8 +11,8 @@ class DataStoreCatalog:
             headers = dict()
         self.headers = headers
 
-    def create_data_store(self, name: str, type: str, id: str = None, custom_metadata: dict = None):
-        data_store_obj = DataStoreObj(name=name, type=type, id=id, custom_metadata=custom_metadata)
+    def create_data_store(self, name: str, type: str, id: str = None, custom_metadata: dict = None, **kwargs):
+        data_store_obj = DataStoreObj(name=name, type=type, id=id, custom_metadata=custom_metadata, **kwargs)
         url = f"{self.service_url}{Routes.DATA_STORES}"
         response = requests.post(url, json=data_store_obj.as_dict(), headers=self.headers)
         assert 201 == response.status_code, "error in calling the server"
