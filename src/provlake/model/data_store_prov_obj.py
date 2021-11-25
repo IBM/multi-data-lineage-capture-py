@@ -13,14 +13,14 @@ class DataStoreObj:
         self.type = type
         if custom_metadata:
             self.custom_metadata = custom_metadata
-        super_type = DataStores.get_data_store_super_type(type)
+        super_type = DataStores.get_data_store_super_type(self.type)
         if super_type in DataStores.DATA_STORE_IDENTIFIERS.keys():
             # assert len(kwargs.keys()) == len(DataStores.DATA_STORE_IDENTIFIERS[super_type]), \
             #     f"Identifiers attributes of data store {type} {name} not defined properly."
 
             for attr in DataStores.DATA_STORE_IDENTIFIERS[super_type]:
                 assert attr in kwargs.keys(), \
-                    f"Attribute {attr} is required for {type} data store."
+                    f"Attribute {attr} is required for {self.type} data store."
                 setattr(self, attr, kwargs.get(attr))
 
     def as_dict(self) -> dict:
