@@ -20,7 +20,7 @@ def csv_extraction_function(file_path_or_buffer, dataset_schema_id: str, dataset
     return {dataset_schema_id: get_list(args_list)}
 
 
-def city_csv_extraction_function(file_path_or_buffer, dataset_schema_id: str, dataset_id: str) -> dict:
+def city_csv_extraction_function(file_path_or_buffer, dataset_schema_id: str) -> dict:
     """extracts city"""
     args_list = []
     df = pd.read_csv(file_path_or_buffer)
@@ -28,7 +28,7 @@ def city_csv_extraction_function(file_path_or_buffer, dataset_schema_id: str, da
     for index, row in df.iterrows():
         dataset_item = dict(row)
         dataset_item["ID"] = get_kg_reference(dataset_item["ID"])
-        args_list.append(get_dataset_item(values=get_dict(dataset_item), order=i, dataset_id=dataset_id))
+        args_list.append(get_dataset_item(values=get_dict(dataset_item), order=i))
         i += 1
 
     return {dataset_schema_id: get_list(args_list)}

@@ -2,10 +2,70 @@ import os
 import uuid
 from .prov_utils import convert_timestamp, id_hash
 
-SERVER_API_ROOT = "/api/lineage"
+
+class Routes:
+
+    # This class defines the routes provided by HKProv service's endpoints defined in the OpenAPI contract
+
+    SERVER_API_ROOT = "/provenance/api"
+
+    # PROSPECTIVE ROUTES
+    METAMODEL_LOAD = "/metamodel/load"
+    PROJECTS = f"{SERVER_API_ROOT}/projects"
+    DATA_STORES = "/data-stores"
+    QUERY_MANAGEMENT = f"{SERVER_API_ROOT}/stored-queries"
+    WORKFLOWS = "/workflows"
+    DATA_TRANSFORMATIONS = "/data-transformations"
+
+    # RETROSPECTIVE ROUTES
+    CYCLE_EXECUTIONS = f"{SERVER_API_ROOT}/workflow-executions/<path:workflow_execution_id>/cycle-executions"
+
+    DATA_TRANSFORMATION_EXECUTIONS = "/data-transformation-executions"
+
+    DATA_TRANSFORMATION_EXECUTIONS_BY_PERSON = \
+        "/persons/<path:person_id>/data-transformation-executions"
+
+    WORKFLOW_EXECUTIONS = "/workflow-executions"
+
+    GLOBAL_WORKFLOW_EXECUTION = "/global-workflow-execution"
+
+    WORKFLOW_EXECUTIONS_BY_WORKFLOW_EXECUTION = f"{WORKFLOW_EXECUTIONS}/<path:workflow_execution_id>"
+
+    WORKFLOW_EXECUTIONS_SUMMARY_BY_WORKFLOW_EXECUTION = \
+        "/workflow-execution-summaries/<path:workflow_execution_id>"
+
+
+class EndpointsTypes:
+
+    # This class define the types used in the endpoints schema, i.e., they are the same defined in the OpenAPI Contract
+
+    WORKFLOW_EXECUTION_ID = "workflow_execution_id"
+    GENERATED_TIME = "generated_time"
+    START_TIME = "start_time"
+    END_TIME = "end_time"
+    WORKFLOW_NAME = "workflow_name"
+    DATA_TRANSFORMATIONS_OF_WORKFLOW = "data_transformations"
+    DATA_TRANSFORMATIONS_EXECUTIONS_OF_WORKFLOW_EXECUTION = "data_transformation_executions"
+    NUMBER_OF_DATA_TRANSFORMATION_EXECUTIONS = "number_of_data_transformation_executions"
+    STATUS = "status"
+    WORKFLOW_EXECUTION_HKG_ID = "workflow_execution_hkg_id"
+    DATA_STORE_HKG_ID = "data_store_hkg_id"
+    DATA_TRANSFORMATION_NAME = "data_transformation_name"
+    DATA_TRANSFORMATION_EXECUTION_ID = "data_transformation_execution_id"
+    INPUT = "input"
+    OUTPUT = "output"
+    ATTRIBUTE_NAME = "attribute_name"
+    ATTRIBUTE_VALUE_ID = "attribute_value_id"
+    ATTRIBUTE_VALUE = "attribute_value"
+    ATTRIBUTE_VALUE_TYPE = "attribute_value_type"
+    DATA_STORE_ID = "data_store_id"
+    CUSTOM_METADATA = "custom_metadata"
+    TASK_ID = "task_id"
+    PERSON_ID = "person_id"
+    DATA_TRANSFORMATION_EXECUTION_HKG_ID = "data_transformation_execution_hkg_ids"
 
 class Vocabulary:
-
+    ID = "ID"
     START_TIME = "startTime"
     END_TIME = "endTime"
     GENERATED_TIME = "generatedTime"
@@ -34,16 +94,30 @@ class Vocabulary:
     DATASET_SCHEMA_ID = "dataset_schema_id"
     DATA_STORE_ID = "data_store_id"
 
+    DATA_TRANSFORMATION_ID = "data_transformation_id"
+    DATA_TRANSFORMATION_NAME = "data_transformation_name"
+    INPUT = "input"
+    OUTPUT = "output"
+    ATTRIBUTE_VALUE_DATA_TYPE = "datatype"
+
+    CHECK_RESULT = "check_result"
+    OPERATION_RESULT = "result"
+    MESSAGE = "message"
+
     # Types:
     DATA_REFERENCE_TYPE = "data_reference"
     KG_REFERENCE_TYPE = "kg_reference"
     ATTRIBUTE_VALUE_WITH_CUSTOM_METADATA_TYPE = "attribute_value"
+    CUSTOM_METADA = "custom_metadata"
     DICT_TYPE = "dict"
     LIST_TYPE = "list"
     SIMPLE_ATV_TYPE = "simple_attribute_value"
     SIMPLE_LIST_TYPE = "simple_list"
     SIMPLE_DICT_TYPE = "simple_dict"
     DATASET_TYPE = "dataset"
+
+    GLOBAL_WORKFLOW_EXECUTION_ID = "global"
+    GLOBAL_WORKFLOW_NAME = "global_workflow"
 
 
 class DataStoreConfiguration:
@@ -76,6 +150,10 @@ class Status:
     FINISHED = "FINISHED"
     ERRORED = "ERRORED"
 
+    @staticmethod
+    def get_status():
+        return [Status.GENERATED, Status.RUNNING, Status.FINISHED, Status.ERRORED]
+
 
 class ActType:
 
@@ -90,6 +168,57 @@ class DataTransformationRequestType:
     INPUT = "Input"
     OUTPUT = "Output"
 
+class DataStores:
+    RDBMS ='RDBMS'
+    TRIPLESTORE = 'Triplestore'
+    DOCUMENT_STORE = 'DocumentDBMS'
+    OBJECT_STORE = 'ObjectStore'
+    FILE_SYSTEM = 'FileSystem'
+    VOLUME = 'Volume'
+    GRAPH_DBMS = "GraphDBMS"
+
+    CLOUD_OBJECT_STORE = "CloudObjectStore"
+    AWSS3 = "AWSS3"
+    NEO4J = "Neo4j"
+    LUSTRE = "Lustre"
+    GPFS = "GPFS"
+    MONGODB = "MongoDB"
+    POSTGRESQL = "PostgreSQL"
+    JENA = "Jena"
+    ALLEGROGRAPH = "AllegroGraph"
+
+    KNOWN_DATA_STORES_TYPES = [ RDBMS, TRIPLESTORE, DOCUMENT_STORE, OBJECT_STORE, FILE_SYSTEM, GRAPH_DBMS]
+
+    KNOWN_DATA_STORES = {
+        RDBMS: [POSTGRESQL],
+        TRIPLESTORE: [ALLEGROGRAPH],
+        DOCUMENT_STORE: [MONGODB],
+        OBJECT_STORE: [CLOUD_OBJECT_STORE, AWSS3],
+        FILE_SYSTEM: [LUSTRE, GPFS]
+    }
+
+    URL = "url"
+    HOST_ADDRESS = "host_address"
+    BUCKET = "bucket"
+
+    DATA_STORE_IDENTIFIERS = {
+        OBJECT_STORE: [URL, BUCKET],
+        RDBMS: [HOST_ADDRESS]
+    }
+
+    @staticmethod
+    def get_known_data_stores():
+        data_stores = list()
+        for data_store_type in DataStores.KNOWN_DATA_STORES:
+            data_stores.extend(DataStores.KNOWN_DATA_STORES[data_store_type])
+        return data_stores
+
+    @staticmethod
+    def get_data_store_super_type(data_store):
+        for data_store_super_type in DataStores.KNOWN_DATA_STORES.keys():
+            if data_store in DataStores.KNOWN_DATA_STORES[data_store_super_type]:
+                return data_store_super_type
+        return None
 
 class PersistenceStrategy:
 
@@ -147,6 +276,10 @@ class StandardNamesAndIds:
 
     @staticmethod
     def get_dte_id(wfe_id, dt_name: str, prov_task: dict):
+        # TODO refactor: wfe_id should be optional
+        if wfe_id is None:
+            wfe_id = StandardNamesAndIds.get_wfe_id(Vocabulary.GLOBAL_WORKFLOW_EXECUTION_ID)
+        wfe_id = str(wfe_id)
         task_id = prov_task["id"]
         # TODO better wfe_id + dte_name + timestamp
         if Vocabulary.GENERATED_TIME in prov_task and \
@@ -191,8 +324,8 @@ class StandardNamesAndIds:
         return project_name
 
     @staticmethod
-    def get_data_store_id(data_store_name):
-        return data_store_name
+    def get_data_store_hkg_id(data_store_id):
+        return data_store_id
 
     @staticmethod
     def get_data_store_ctx_id(data_store_id):

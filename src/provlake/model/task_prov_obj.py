@@ -1,18 +1,25 @@
+from typing import Optional
+
 from provlake.model.activity_prov_obj import ProvRequestObj
-from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequestType
+from provlake.utils.constants import Vocabulary, ActType, DataTransformationRequestType, Status
 
 
 class TaskProvRequestObj(ProvRequestObj):
 
-    def __init__(self, dt_name: str, type_: str, workflow_name: str, wf_exec_id: float, task_id=None,
+    def __init__(self, dt_name: str, type_: str, workflow_name: Optional[str] = None, wf_exec_id: Optional = None,
+                 task_id=None,
                  person_id: str = None, values: dict = None,
                  generated_time: float = None, start_time: float = None, end_time: float = None,
                  parent_cycle_iteration=None, parent_cycle_name=None, status: str = None,
-                 stdout: str=None, stderr: str=None, custom_metadata:dict=None, attribute_associations:dict=None):
+                 stdout: str = None, stderr: str = None, custom_metadata: dict = None,
+                 attribute_associations: dict = None):
         super().__init__(ActType.TASK, workflow_name, wf_exec_id, custom_metadata)
         assert type_ in [DataTransformationRequestType.INPUT,
                          DataTransformationRequestType.OUTPUT,
                          DataTransformationRequestType.GENERATE]
+        if status:
+            assert isinstance(status, str)
+            assert status in Status.get_status()
         self.dt_name = dt_name
         self.person_id = person_id
         self.type_ = type_

@@ -91,7 +91,7 @@ def get_kg_reference(value, data_store_id=None) -> dict:
     return ret
 
 
-def get_dataset_item(values, order: int=None, dataset_id=None) -> dict:
+def get_dataset_item(values, order: int = None, dataset_id=None) -> dict:
     ret = {
         Vocabulary.VALUES: values,
         Vocabulary.PROV_ATTR_TYPE: Vocabulary.DATASET_ITEM
