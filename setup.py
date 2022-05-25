@@ -18,6 +18,6 @@ setup(name='provlake',
       install_requires=requires,
       package_dir={'': 'src'},
       packages=find_packages(where='src'),
-      python_requires='>=3.6,<=3.9',
+      python_requires='>=3.6,<=3.9.x',
       include_package_data=True,
       zip_safe=False)
