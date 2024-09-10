@@ -23,7 +23,7 @@ class ManagedPersister(Persister):
 
     def __init__(self, log_file_path: str, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
-                 log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True,
+                 log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True, synchronous: bool = False
                  ):
         super().__init__(log_file_path)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
@@ -35,6 +35,7 @@ class ManagedPersister(Persister):
         self.bag_size = bag_size
         self.should_send_to_service = should_send_to_service
         self.should_send_to_file = should_send_to_file
+        self.synchronous = synchronous
 
         self._session = None
         self._offline_prov_log = None
@@ -121,6 +122,8 @@ class ManagedPersister(Persister):
 
     def _send_to_service(self, to_flush: List[dict]):
         params = {"with_validation": str(self.with_validation), "db_name": self.db_name}
+        if self.synchronous:
+            params["synchronous"] = "true"
         try:
             logger.debug("[Prov-Persistence]" + json.dumps(to_flush))
             # TODO: check whether we need this result() below

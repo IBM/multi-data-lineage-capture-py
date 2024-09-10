@@ -22,7 +22,8 @@ class ProvLake:
             context: str,
             with_validation: bool,
             db_name: str,
-            log_file_path: str
+            log_file_path: str, 
+            synchronous: bool,
     ) -> ManagedPersister:
         should_send_to_service = False
         if service_url is not None:
@@ -45,7 +46,8 @@ class ProvLake:
             should_send_to_file=should_send_to_file,
             log_dir=log_dir,
             log_file_path=log_file_path,
-            should_send_to_service=should_send_to_service)
+            should_send_to_service=should_send_to_service, 
+            synchronous=synchronous,)
 
     @staticmethod
     def _build_unmanaged_persister(log_file_path:str) -> UnmanagedPersister:
@@ -56,14 +58,15 @@ class ProvLake:
     def get_persister(
             log_file_path=None,
             managed_persistence=True,
-            context: str = None,
+            context: str | None = None,
             with_validation: bool = False,
             log_level: str = 'error',
             should_send_to_file=True,
             log_dir='.',
             service_url=None,
             bag_size=None,
-            db_name: str = None
+            db_name: str | None = None, 
+            synchronous: bool = False,
     ) -> Persister:
         if ProvLake._persister_singleton_instance is None:
 
@@ -81,11 +84,12 @@ class ProvLake:
                     context=context,
                     with_validation=with_validation,
                     db_name=db_name,
-                    log_file_path=log_file_path
+                    log_file_path=log_file_path, 
+                    synchronous=synchronous,
                 )
             else:
                 persister = ProvLake._build_unmanaged_persister(
-                    log_file_path
+                    log_file_path,
                 )
             ProvLake._persister_singleton_instance = persister
         return ProvLake._persister_singleton_instance
