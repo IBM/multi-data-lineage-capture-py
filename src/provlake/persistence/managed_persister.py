@@ -24,7 +24,7 @@ class ManagedPersister(Persister):
     def __init__(self, log_file_path: str, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
                  log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True, synchronous: bool = False, 
-                 retries_on_connection_error: int = 5
+                 retries_on_connection_error: int = 8
                  ):
         super().__init__(log_file_path)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
@@ -147,7 +147,9 @@ class ManagedPersister(Persister):
                     "[Prov] Unexpected exception while adding retrospective provenance: " + type(ex).__name__
                     + "->" + str(ex))
                 r = None
-                pass
+                break
+        if r is None:
+            logger.info('Could not process provenance trace {}'.format(json.dumps(to_flush)))
         # If requests were validated, check for errors
         if r and self.with_validation:
             self._log_validation_message(r)
