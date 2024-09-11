@@ -5,6 +5,7 @@ import logging
 import traceback
 from time import sleep
 import urllib3
+import requests
 
 from requests.exceptions import ConnectionError
 from requests_futures.sessions import FuturesSession
@@ -131,7 +132,10 @@ class ManagedPersister(Persister):
             try:
                 logger.debug("[Prov-Persistence] [Retry#" + str(i) + "]" + json.dumps(to_flush))
                 # TODO: check whether we need this result() below
-                r = self.session.post(self.retrospective_url, json=to_flush, params=params, verify=False).result()
+                if self.synchronous:
+                    r = requests.post(self.retrospective_url, json=to_flush, params=params, verify=False)
+                else:
+                    r = self.session.post(self.retrospective_url, json=to_flush, params=params, verify=False).result()
                 break
             except ConnectionError as ex:
                 logger.error(
