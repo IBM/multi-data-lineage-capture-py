@@ -23,7 +23,8 @@ class ManagedPersister(Persister):
 
     def __init__(self, log_file_path: str, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
-                 log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True, synchronous: bool = False
+                 log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True, synchronous: bool = False, 
+                 retries_on_connection_error: int = 5
                  ):
         super().__init__(log_file_path)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
@@ -36,6 +37,7 @@ class ManagedPersister(Persister):
         self.should_send_to_service = should_send_to_service
         self.should_send_to_file = should_send_to_file
         self.synchronous = synchronous
+        self.retries_on_connection_error = retries_on_connection_error
 
         self._session = None
         self._offline_prov_log = None
@@ -124,22 +126,28 @@ class ManagedPersister(Persister):
         params = {"with_validation": str(self.with_validation), "db_name": self.db_name}
         if self.synchronous:
             params["synchronous"] = "true"
-        try:
-            logger.debug("[Prov-Persistence]" + json.dumps(to_flush))
-            # TODO: check whether we need this result() below
-            r = self.session.post(self.retrospective_url, json=to_flush, params=params, verify=False).result()
-        except ConnectionError as ex:
-            logger.error(
-                "[Prov][ConnectionError] There is a communication error between client and server -> " + str(ex))
-            r = None
-            pass
-        except Exception as ex:
-            traceback.print_exc()
-            logger.error(
-                "[Prov] Unexpected exception while adding retrospective provenance: " + type(ex).__name__
-                + "->" + str(ex))
-            r = None
-            pass
+        r = None
+        for i in range(self.retries_on_connection_error):
+            try:
+                logger.debug("[Prov-Persistence] [Retry#" + str(i) + "]" + json.dumps(to_flush))
+                # TODO: check whether we need this result() below
+                r = self.session.post(self.retrospective_url, json=to_flush, params=params, verify=False).result()
+                break
+            except ConnectionError as ex:
+                logger.error(
+                    "[Prov][ConnectionError] There is a communication error between client and server -> " + str(ex))
+                sleep_for = (2 ** i)
+                logging.debug(f'Exponential backoff ({sleep_for})')
+                sleep(sleep_for)
+                r = None
+                pass
+            except Exception as ex:
+                traceback.print_exc()
+                logger.error(
+                    "[Prov] Unexpected exception while adding retrospective provenance: " + type(ex).__name__
+                    + "->" + str(ex))
+                r = None
+                pass
         # If requests were validated, check for errors
         if r and self.with_validation:
             self._log_validation_message(r)
