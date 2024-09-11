@@ -25,7 +25,7 @@ class ManagedPersister(Persister):
     def __init__(self, log_file_path: str, service_url: str, wf_exec_id=None, context: str = None,
                  with_validation: bool = False, db_name: str = None, bag_size: int = 1,
                  log_dir: str = '.', should_send_to_file: bool = False, should_send_to_service: bool = True, synchronous: bool = False, 
-                 retries_on_connection_error: int = 8
+                 retries_on_connection_error: int = 10
                  ):
         super().__init__(log_file_path)
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
