@@ -28,6 +28,7 @@ class ManagedPersister(Persister):
                  retries_on_connection_error: int = 10
                  ):
         super().__init__(log_file_path)
+        self._service_url = service_url
         self.retrospective_url = urljoin(service_url, "retrospective-provenance")
         self.prospective_url = urljoin(service_url, "prospective-provenance")
         self.context = context
@@ -89,6 +90,17 @@ class ManagedPersister(Persister):
             logger.error("[Prov] Unexpected exception")
             traceback.print_exc()
             pass
+
+    def patch_custom_metadata(self, prov_task, custom_metadata: dict):
+        prov_task_id = prov_task.dte_id
+        url = urljoin(self._service_url, f"/provenance/api/data-transformation-executions/{prov_task_id}/custom-metadata")
+
+        if self.synchronous:
+            r = requests.patch(url, json=custom_metadata, verify=False)
+        else:
+            r = self.session.patch(url, json=custom_metadata, verify=False).result()
+
+        assert r.status_code in [200, 300], f'[{r.status_code}] {r.content=}'
 
     def close(self):
         if self.session:

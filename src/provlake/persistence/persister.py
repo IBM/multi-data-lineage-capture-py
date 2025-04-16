@@ -22,4 +22,6 @@ class Persister:
         del ProvLake._persister_singleton_instance
         ProvLake._persister_singleton_instance = None
 
+    def patch_custom_metadata(self, prov_task, custom_metadata):
+        raise NotImplementedError
 

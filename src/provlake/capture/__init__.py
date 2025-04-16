@@ -177,6 +177,9 @@ class ProvTask(ActivityCapture):
                          self.prov_obj.dt_name + " args: " + str(self.prov_obj.values))
             return None
 
+    def patch_custom_metadata(self, custom_metadata: dict):
+        self._prov_persister.patch_custom_metadata(self, custom_metadata)
+
     def __enter__(self):
         self.begin()
         return self
@@ -185,6 +188,10 @@ class ProvTask(ActivityCapture):
         if self._prov_persister and not self.stored_output:
             # There is no output, but end of task should be recorded anyway.
             self.end()
+
+    @property
+    def dte_id(self, ) -> str: 
+        return f'{self.prov_obj.workflow_name}_exec_{self.prov_obj.wf_exec_id}_{self.prov_obj.dt_name}_{self.prov_obj.task_id}'
 
 
 class ProvCycle(ActivityCapture):
