@@ -248,16 +248,16 @@ class StandardNamesAndIds:
     def get_id_atv(attribute_id, value, value_type=None):
         if value_type:
             if value_type in {Vocabulary.DATA_REFERENCE_TYPE, Vocabulary.KG_REFERENCE_TYPE}:
-                return attribute_id + "_" + str(value)
+                return attribute_id + "_" + id_hash(str(value))
             elif value_type == Vocabulary.DATASET_ITEM:
                 return "dataset_item_"+str(uuid.uuid4())
             else:
-                return attribute_id + "_" + str(value)
+                return attribute_id + "_" + id_hash(str(value))
         else:
             if type(value) in [dict, list]:
                 return attribute_id + "_" + id_hash(str(value))
             else:
-                # TODO if its a float, replace the dots
+                # TODO: if its a float, replace the dots
                 return attribute_id + "_" + str(value)
 
     @staticmethod
